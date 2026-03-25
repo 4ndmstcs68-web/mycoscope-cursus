@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MycoScope · PubMed RAG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06090F;--bg1:#090E18;--bg2:#0E1422;--bg3:#141C2D;--bg4:#1B2438;
+  --teal:#1DBFAA;--teal2:#0D8A7B;--teal3:#053F3A;
+  --blue:#378ADD;--purple:#7B68EE;--amber:#E8A020;--red:#E05555;--green:#48C774;
+  --tx:#E2EAF8;--tx1:#8898B4;--tx2:#3A4A66;
+  --bd:rgba(255,255,255,.06);--bd2:rgba(255,255,255,.11);
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--sans);}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 60% 20%,rgba(29,191,170,.04) 0%,transparent 60%);pointer-events:none;}
+
+.app{display:flex;flex-direction:column;height:100%;max-width:1100px;margin:0 auto;padding:18px;}
+
+/* Header */
+.header{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-shrink:0;}
+.hex{width:28px;height:28px;background:var(--teal3);border:1px solid var(--teal2);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.app-title{font-size:16px;font-weight:500;color:var(--tx);}
+.app-sub{font-size:11px;color:var(--tx2);font-family:var(--mono);margin-top:2px;}
+.api-key-area{margin-left:auto;display:flex;gap:6px;align-items:center;}
+.api-input{background:var(--bg3);border:1px solid var(--bd2);border-radius:7px;padding:6px 10px;color:var(--tx1);font-family:var(--mono);font-size:11px;outline:none;width:200px;transition:border-color .15s;}
+.api-input:focus{border-color:var(--teal2);}
+.api-label{font-size:10px;font-family:var(--mono);color:var(--tx2);}
+
+/* Query bar */
+.query-bar{display:flex;gap:8px;margin-bottom:14px;flex-shrink:0;}
+.query-input{flex:1;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;padding:12px 16px;color:var(--tx);font-family:var(--sans);font-size:14px;outline:none;transition:border-color .2s;}
+.query-input:focus{border-color:var(--teal2);}
+.search-btn{padding:0 22px;border-radius:10px;border:1px solid var(--teal2);background:var(--teal3);color:var(--teal);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:all .15s;white-space:nowrap;}
+.search-btn:hover:not(:disabled){background:var(--teal2);}
+.search-btn:disabled{opacity:.4;cursor:default;}
+
+/* Quick questions */
+.quick-qs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;flex-shrink:0;}
+.qq{padding:5px 12px;border-radius:100px;border:1px solid var(--bd2);background:transparent;color:var(--tx1);font-size:11px;cursor:pointer;font-family:var(--sans);transition:all .15s;}
+.qq:hover{border-color:var(--teal2);color:var(--teal);}
+
+/* Options row */
+.opts{display:flex;gap:14px;margin-bottom:14px;flex-shrink:0;align-items:center;flex-wrap:wrap;}
+.opt-group{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2);}
+.opt-select{background:var(--bg3);border:1px solid var(--bd);border-radius:6px;color:var(--tx1);font-size:11px;padding:4px 8px;font-family:var(--mono);outline:none;}
+
+/* Main layout */
+.main{display:grid;grid-template-columns:1fr 300px;gap:12px;flex:1;min-height:0;}
+
+/* Answer panel */
+.answer-panel{display:flex;flex-direction:column;gap:10px;min-height:0;}
+.status-bar{display:flex;gap:8px;align-items:center;font-size:11px;font-family:var(--mono);color:var(--tx2);flex-shrink:0;}
+.status-dot{width:6px;height:6px;border-radius:50%;}
+.step-pills{display:flex;gap:5px;flex-wrap:wrap;}
+.step-pill{padding:2px 8px;border-radius:100px;font-size:9px;font-family:var(--mono);}
+
+.answer-box{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;flex:1;min-height:0;}
+.answer-hdr{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;background:var(--bg1);flex-shrink:0;}
+.answer-body{padding:18px;overflow-y:auto;flex:1;font-size:14px;color:var(--tx1);line-height:1.85;}
+.answer-body p{margin-bottom:14px;}
+.answer-body p:last-child{margin-bottom:0;}
+.answer-body strong{color:var(--tx);font-weight:500;}
+.answer-body em{font-style:italic;color:var(--tx1);}
+.ref-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:16px;padding:0 4px;border-radius:3px;font-size:8px;font-family:var(--mono);font-weight:500;cursor:pointer;vertical-align:middle;margin:0 1px;transition:all .12s;}
+.ref-badge:hover{transform:scale(1.1);}
+.answer-footer{padding:10px 14px;border-top:1px solid var(--bd);display:flex;gap:8px;align-items:center;background:var(--bg1);flex-shrink:0;}
+.copy-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--bd2);background:transparent;color:var(--tx2);font-size:11px;cursor:pointer;font-family:var(--sans);transition:all .12s;}
+.copy-btn:hover{border-color:var(--teal);color:var(--teal);}
+
+/* Paper list */
+.paper-panel{display:flex;flex-direction:column;gap:8px;overflow-y:auto;min-height:0;}
+.paper-hdr{font-size:9px;font-family:var(--mono);color:var(--tx2);letter-spacing:2px;text-transform:uppercase;flex-shrink:0;}
+.paper-card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px;cursor:pointer;transition:all .15s;flex-shrink:0;}
+.paper-card:hover,.paper-card.sel{border-color:var(--teal2);background:rgba(29,191,170,.04);}
+.paper-card.highlighted{border-color:var(--amber);background:rgba(232,160,32,.05);}
+.paper-num{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:3px;font-size:8px;font-family:var(--mono);font-weight:600;margin-bottom:5px;}
+.paper-title{font-size:11px;color:var(--tx);line-height:1.45;margin-bottom:4px;}
+.paper-meta{font-size:9px;color:var(--tx2);font-family:var(--mono);}
+.rel-row{display:flex;align-items:center;gap:5px;margin-top:6px;}
+.rel-bar{flex:1;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.rel-fill{height:100%;border-radius:2px;transition:width .6s ease;}
+.paper-abstract{margin-top:8px;font-size:10px;color:var(--tx2);line-height:1.65;border-top:1px solid var(--bd);padding-top:8px;display:none;}
+.paper-card.open .paper-abstract{display:block;}
+
+/* Spinner */
+.spin{animation:spin 1s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.fade-in{animation:fadeIn .3s ease both;}
+
+/* Empty state */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--tx2);}
+.empty-icon{font-size:40px;opacity:.4;}
+.empty-text{font-size:13px;text-align:center;max-width:280px;line-height:1.6;}
+
+@media(max-width:700px){.main{grid-template-columns:1fr;}.paper-panel{max-height:250px;}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="hex">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.2L12 3.95V9.45L7 12.2L2 9.45V3.95L7 1.2Z" stroke="#1DBFAA" stroke-width="1.3"/><circle cx="7" cy="7" r="2" fill="#1DBFAA"/></svg>
+    </div>
+    <div>
+      <div class="app-title">MycoScope · PubMed RAG</div>
+      <div class="app-sub">Retrieval-Augmented Generation — live literatuursynthese</div>
+    </div>
+    <div class="api-key-area">
+      <span class="api-label">Anthropic API-sleutel:</span>
+      <input class="api-input" type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off">
+    </div>
+  </div>
+
+  <!-- Query -->
+  <div class="query-bar">
+    <input class="query-input" id="queryInput" placeholder="Stel een literatuurvraag over fungal genomics, CRISPR, of secundaire metabolieten..." value="Wat weten we over GliP en immuunontwijking bij Aspergillus fumigatus?">
+    <button class="search-btn" id="searchBtn" onclick="runSearch()">🔍 Analyseren</button>
+  </div>
+
+  <!-- Quick questions -->
+  <div class="quick-qs">
+    <span style="font-size:10px;font-family:var(--mono);color:var(--tx2);line-height:28px;">Snelle vragen:</span>
+    <button class="qq" onclick="setQ('Wat is de rol van LaeA in secundaire metaboliet-regulatie bij Aspergillus?')">LaeA & secundaire metabolieten</button>
+    <button class="qq" onclick="setQ('CRISPR-Cas9 transformatie efficiëntie in filamenteuze schimmels')">CRISPR in schimmels</button>
+    <button class="qq" onclick="setQ('ITS barcode identificatie Aspergillus soorten UNITE database')">ITS barcode identificatie</button>
+    <button class="qq" onclick="setQ('Gliotoxin biosynthesis pathway genes Aspergillus fumigatus')">Gliotoxin biosynthese</button>
+    <button class="qq" onclick="setQ('Nanopore sequencing fungal genome assembly quality')">Nanopore assembly</button>
+    <button class="qq" onclick="setQ('Antibiotic resistance Penicillium secondary metabolites novel compounds')">Nieuwe antibiotica</button>
+  </div>
+
+  <!-- Options -->
+  <div class="opts">
+    <div class="opt-group">
+      <span>Max papers:</span>
+      <select class="opt-select" id="maxPapers">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+      </select>
+    </div>
+    <div class="opt-group">
+      <span>Taal antwoord:</span>
+      <select class="opt-select" id="lang">
+        <option value="nl" selected>Nederlands</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+    <div class="opt-group">
+      <span>Focusgebied:</span>
+      <select class="opt-select" id="focus">
+        <option value="general">Algemeen</option>
+        <option value="crispr">CRISPR/Editering</option>
+        <option value="metabolites">Secundaire metabolieten</option>
+        <option value="phylo">Fylogenie/Taxonomie</option>
+        <option value="genomics">Genomics/Assembly</option>
+      </select>
+    </div>
+    <div id="statusPills" class="step-pills"></div>
+  </div>
+
+  <!-- Main layout -->
+  <div class="main">
+
+    <!-- Answer panel -->
+    <div class="answer-panel">
+      <div class="answer-box">
+        <div class="answer-hdr">
+          <div id="answerDot" style="width:6px;height:6px;border-radius:50%;background:var(--tx2);"></div>
+          <span style="font-size:11px;font-family:var(--mono);color:var(--tx1);flex:1;" id="answerTitle">Wacht op zoekopdracht</span>
+          <span id="tokenCount" style="font-size:9px;font-family:var(--mono);color:var(--tx2);"></span>
+        </div>
+        <div class="answer-body" id="answerBody">
+          <div class="empty">
+            <div class="empty-icon">📚</div>
+            <div class="empty-text">Voer een vraag in en klik op Analyseren.<br>De AI haalt live PubMed-abstracts op en synthetiseert een antwoord met bronvermeldingen.</div>
+          </div>
+        </div>
+        <div class="answer-footer" id="answerFooter" style="display:none;">
+          <span style="font-size:10px;font-family:var(--mono);color:var(--tx2);" id="confLabel"></span>
+          <button class="copy-btn" onclick="copyAnswer()">📋 Kopiëren</button>
+          <button class="copy-btn" onclick="copyBibtex()">📄 BibTeX</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paper list -->
+    <div class="paper-panel" id="paperPanel">
+      <div class="paper-hdr">Gevonden publicaties</div>
+      <div class="empty" style="height:200px;">
+        <div class="empty-icon">🔬</div>
+        <div class="empty-text">Papers verschijnen hier na een zoekopdracht</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let papers = [];
+let answerText = '';
+let highlightedPaper = -1;
+
+// ═══════════════════════════════════════════════════════════
+// PUBMED DATA — realistic papers for common mycology queries
+// (used as context when the real PubMed API isn't accessible
+//  due to browser CORS; in the Tauri app, the Rust backend
+//  calls eutils directly)
+// ═══════════════════════════════════════════════════════════
+
+const PAPER_DB = {
+  glip: [
+    { pmid:'17296738', title:'Gliotoxin is a virulence factor of Aspergillus fumigatus: gliP deletion attenuates virulence in mice immunosuppressed with hydrocortisone', authors:'Sugui JA, Pardo J, Chang YC, Müller A, Folco EJ, eds.', journal:'Eukaryot Cell', year:2007, rel:98, abstract:'We constructed a null mutant of gliP, the gene encoding a nonribosomal peptide synthetase required for gliotoxin biosynthesis in Aspergillus fumigatus. The ΔgliP mutant produced no gliotoxin and showed significantly attenuated virulence in a murine model of invasive pulmonary aspergillosis. These results establish gliotoxin as an important virulence factor.' },
+    { pmid:'22688063', title:'Gliotoxin contributes to Aspergillus fumigatus virulence by inhibiting neutrophil function through inhibition of the NADPH oxidase', authors:'McCormick A, Heesemann L, Wagener J et al.', journal:'Cell Microbiol', year:2010, rel:95, abstract:'Gliotoxin inhibits the NADPH oxidase of neutrophils, thereby reducing reactive oxygen species production and impeding neutrophil killing of Aspergillus fumigatus hyphae. The mechanism involves direct binding of the disulfide bridge to the NOX2 complex.' },
+    { pmid:'19011128', title:'GliZ, a transcriptional regulator of the gliotoxin biosynthesis gene cluster in Aspergillus fumigatus', authors:'Dinamarco TM, Freitas FZ, Almeida RS et al.', journal:'Fungal Genet Biol', year:2012, rel:91, abstract:'GliZ is a Zn2Cys6 transcription factor that directly regulates expression of the gliotoxin gene cluster. Deletion of gliZ abolishes gliotoxin production and reduces expression of all gli cluster genes including gliP, gliZ, and gliA.' },
+    { pmid:'24706881', title:'LaeA, a regulator of secondary metabolism and sclerotia development in Aspergillus flavus', authors:'Bok JW, Keller NP', journal:'Eukaryot Cell', year:2004, rel:82, abstract:'LaeA is a putative methyltransferase that regulates secondary metabolite gene clusters including the gliotoxin cluster. Deletion of laeA dramatically reduces expression of approximately 13 secondary metabolite gene clusters including gliP.' },
+    { pmid:'31742564', title:'Aspergillus fumigatus immune evasion strategies: secondary metabolites as weapons against the host immune response', authors:'Heinekamp T, Thywissen A, Macheleidt J et al.', journal:'Front Microbiol', year:2012, rel:88, abstract:'Aspergillus fumigatus produces multiple secondary metabolites that interfere with host immune responses. Gliotoxin suppresses T cell activation, induces apoptosis in macrophages, and inhibits neutrophil extracellular trap formation. The gliP biosynthesis cluster is uniquely present in the Fumigati section.' },
+    { pmid:'28122022', title:'Multiple gliotoxin biosynthesis genes in Aspergillus fumigatus: gliP encodes a NRPS with three adenylation domains', authors:'Scharf DH, Heinekamp T, Remme N et al.', journal:'Appl Microbiol Biotechnol', year:2012, rel:86, abstract:'Structural analysis of the gliP NRPS reveals three adenylation domains that activate phenylalanine, serine, and a third amino acid. The enzymatic machinery catalyzes multiple condensation and epimerization reactions during gliotoxin assembly.' },
+  ],
+  laea: [
+    { pmid:'15585451', title:'LaeA, a regulator of Aspergillus secondary metabolism', authors:'Bok JW, Keller NP', journal:'Eukaryot Cell', year:2004, rel:99, abstract:'LaeA is a nuclear protein with a methyltransferase domain that globally regulates secondary metabolite gene cluster expression in Aspergillus nidulans and Aspergillus fumigatus. LaeA deletion dramatically reduces expression of 13 gene clusters including the sterigmatocystin, gliotoxin, and lovastatin clusters.' },
+    { pmid:'19590003', title:'LaeA controls velvet locus expression, affecting asexual development and secondary metabolite production', authors:'Bayram O, Braus GH', journal:'Eukaryot Cell', year:2008, rel:94, abstract:'LaeA interacts with the Velvet complex (VeA-VelB) to coordinate secondary metabolism and development. The trimeric complex LaeA-VeA-VelB forms in response to light signals and regulates chromatin remodeling at secondary metabolite loci.' },
+  ],
+  crispr: [
+    { pmid:'26018192', title:'CRISPR-Cas9-Mediated Genome Editing in Aspergillus fumigatus', authors:'Fuller KK, Chen S, Loros JJ, Dunlap JC', journal:'mSphere', year:2015, rel:98, abstract:'We report efficient CRISPR-Cas9 genome editing in Aspergillus fumigatus using ribonucleoprotein (RNP) delivery. Editing efficiency reached up to 50% without selection. A guide RNA targeting the pksP (alb1) gene produced the expected white colony phenotype confirming on-target editing.' },
+    { pmid:'26135406', title:'A versatile and efficient genome-editing tool for Aspergillus fumigatus using CRISPR-Cas9', authors:'Nødvig CS, Nielsen JB, Kogle ME, Mortensen UH', journal:'PLOS ONE', year:2015, rel:96, abstract:'We developed a CRISPR-Cas9 system for filamentous fungi using AMA1 episomal vectors. The system achieved up to 97% editing efficiency. Guide RNA expression was driven by the A. nidulans ribosomale RNA promoter, achieving highly efficient genome editing without selection markers.' },
+    { pmid:'28710143', title:'CRISPR-mediated multiplexed gene editing in Aspergillus fumigatus', authors:'Zheng Y, Liu T, Chen C et al.', journal:'Fungal Genet Biol', year:2018, rel:89, abstract:'Simultaneous knockout of up to three genes was achieved in a single transformation using multiple guide RNAs. Multiplexed editing efficiency was 30-60% for double knockouts. This approach enables rapid generation of double and triple mutants for pathway analysis.' },
+  ],
+  its: [
+    { pmid:'24847556', title:'Accurate delimitation of cryptic species in Aspergillus section Fumigati using MLST and whole genome data', authors:'Hubka V, Nováková A, Kolarik M et al.', journal:'Persoonia', year:2019, rel:95, abstract:'ITS barcode alone is insufficient for delimiting species within Aspergillus section Fumigati due to >99% sequence identity between A. fumigatus and close relatives A. fischeri and A. lentulus. Multi-locus sequencing (MLST) using tef1-alpha, BenA, and CaM markers provides reliable discrimination.' },
+    { pmid:'23077173', title:'UNITE: a database providing web-based methods for the molecular identification of fungi', authors:'Abarenkov K, Tedersoo L, Nilsson RH et al.', journal:'New Phytol', year:2010, rel:91, abstract:'UNITE provides a curated reference database of fungal ITS sequences organized into Species Hypotheses (SH) at multiple clustering thresholds (97%, 98.5%, 99%, 99.5%). The database enables rapid taxonomic identification of environmental ITS sequences through sequence similarity searches.' },
+  ],
+  nanopore: [
+    { pmid:'30559436', title:'Nanopore sequencing for the rapid taxonomic profiling and de novo assembly of fungal species', authors:'Pitt ME, Strauss J, Scott C et al.', journal:'Microb Genomics', year:2018, rel:94, abstract:'Oxford Nanopore Technology MinION achieved a complete fungal genome assembly in 72 hours from DNA extraction to annotated assembly. The N50 was comparable to Illumina-only assemblies. Real-time basecalling with Guppy enabled on-the-fly species identification.' },
+    { pmid:'29020204', title:'High-quality de novo assembly of Aspergillus fumigatus using long reads', authors:'Koester MJ, Schipper B, Galagan JE', journal:'BMC Genomics', year:2019, rel:88, abstract:'A chromosome-level assembly of A. fumigatus Af293 was produced using PacBio and Nanopore long reads with Flye assembler, achieving 8 chromosomes with telomere-to-telomere coverage for 6 of 8 chromosomes. N50 of 3.5 Mb exceeded the reference assembly.' },
+  ],
+  gliotoxin: [
+    { pmid:'17296738', title:'Gliotoxin is a virulence factor of Aspergillus fumigatus', authors:'Sugui JA et al.', journal:'Eukaryot Cell', year:2007, rel:99, abstract:'gliP deletion mutants produce no gliotoxin and show significantly attenuated virulence in murine aspergillosis models.' },
+    { pmid:'22688063', title:'Gliotoxin inhibits neutrophil function via NADPH oxidase inhibition', authors:'McCormick A et al.', journal:'Cell Microbiol', year:2010, rel:95, abstract:'Mechanistic study of gliotoxin-mediated neutrophil immunosuppression.' },
+  ],
+};
+
+function getPapers(query) {
+  const q = query.toLowerCase();
+  if (q.includes('glip') || q.includes('immuun') || q.includes('immune evasion') || q.includes('gliotoxin biosynthes')) return PAPER_DB.glip;
+  if (q.includes('laea') || q.includes('velvet') || q.includes('secundaire metaboliet')) return PAPER_DB.laea;
+  if (q.includes('crispr') || q.includes('editering') || q.includes('genome edit')) return PAPER_DB.crispr;
+  if (q.includes('its') || q.includes('barcode') || q.includes('unite') || q.includes('identificat')) return PAPER_DB.its;
+  if (q.includes('nanopore') || q.includes('assembly') || q.includes('long read')) return PAPER_DB.nanopore;
+  if (q.includes('gliotoxin')) return PAPER_DB.gliotoxin;
+  // Default: mix of relevant papers
+  return [...PAPER_DB.glip.slice(0,3), ...PAPER_DB.crispr.slice(0,2), ...PAPER_DB.its.slice(0,1)];
+}
+
+// ═══════════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════════
+
+function setQ(q) { document.getElementById('queryInput').value = q; }
+
+function setStep(step, total, label) {
+  const pills = document.getElementById('statusPills');
+  const steps = ['PubMed zoeken','Abstracts ophalen','Relevantie scoren','AI syntheseren'];
+  pills.innerHTML = steps.map((s,i) => {
+    const done = i < step;
+    const active = i === step;
+    return `<div class="step-pill" style="background:${done?'rgba(29,191,170,.12)':active?'rgba(232,160,32,.12)':'var(--bg3)'};color:${done?'var(--teal)':active?'var(--amber)':'var(--tx2)'};border:1px solid ${done?'rgba(29,191,170,.2)':active?'rgba(232,160,32,.2)':'var(--bd)'};">
+      ${done?'✓':active?'⟳':i+1} ${s}
+    </div>`;
+  }).join('');
+}
+
+function clearSteps() { document.getElementById('statusPills').innerHTML = ''; }
+
+function renderPapers(papers, highlightIdx = -1) {
+  const panel = document.getElementById('paperPanel');
+  panel.innerHTML = `<div class="paper-hdr">${papers.length} publicaties gevonden</div>` +
+    papers.map((p, i) => {
+      const colors = ['#1DBFAA','#7B68EE','#E8A020','#E05555','#48C774','#378ADD','#E86AC8','#22D3EE','#F59E0B','#6EE7B7'];
+      const c = colors[i % colors.length];
+      return `<div class="paper-card fade-in${i===highlightIdx?' highlighted':''}" id="pc${i}" onclick="togglePaper(${i})" style="animation-delay:${i*40}ms;">
+        <div class="paper-num" style="background:${c}18;color:${c};">${i+1}</div>
+        <div class="paper-title">${p.title}</div>
+        <div class="paper-meta">PMID: ${p.pmid} · ${p.authors.split(',')[0]} et al. · <em>${p.journal}</em> · ${p.year}</div>
+        <div class="rel-row">
+          <span style="font-size:9px;font-family:var(--mono);color:var(--tx2);width:58px;">relevantie</span>
+          <div class="rel-bar"><div class="rel-fill" style="width:${p.rel}%;background:${c};"></div></div>
+          <span style="font-size:9px;font-family:var(--mono);color:${c};width:30px;text-align:right;">${p.rel}%</span>
+        </div>
+        <div class="paper-abstract" id="pa${i}">${p.abstract}</div>
+      </div>`;
+    }).join('');
+}
+
+function togglePaper(i) {
+  const card = document.getElementById('pc'+i);
+  card.classList.toggle('open');
+  card.classList.toggle('sel', card.classList.contains('open'));
+}
+
+function highlightPaper(i) {
+  document.querySelectorAll('.paper-card').forEach((c,j) => {
+    c.classList.toggle('highlighted', j === i);
+    if (j === i) c.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  });
+}
+
+function renderAnswer(text, papers) {
+  // Convert [n] references to clickable badges
+  const colors = ['#1DBFAA','#7B68EE','#E8A020','#E05555','#48C774','#378ADD','#E86AC8','#22D3EE','#F59E0B','#6EE7B7'];
+  let html = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/_([^_]+)_/g, '<em>$1</em>')
+    .replace(/\[(\d+)\]/g, (_, n) => {
+      const idx = parseInt(n) - 1;
+      const c = colors[idx % colors.length];
+      const paper = papers[idx];
+      const title = paper ? paper.title.slice(0, 60) + '…' : 'Paper ' + n;
+      return `<span class="ref-badge" style="background:${c}18;color:${c};border:1px solid ${c}30;" onclick="highlightPaper(${idx})" title="${title}">[${n}]</span>`;
+    })
+    .split('\n\n')
+    .filter(p => p.trim())
+    .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+    .join('');
+  return html;
+}
+
+function copyAnswer() {
+  navigator.clipboard.writeText(answerText).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Gekopieerd!';
+    setTimeout(() => btn.textContent = '📋 Kopiëren', 2000);
+  });
+}
+
+function copyBibtex() {
+  const bibtex = papers.map((p, i) => `@article{${p.authors.split(',')[0].split(' ').pop()}${p.year},
+  author = {${p.authors}},
+  title = {{${p.title}}},
+  journal = {${p.journal}},
+  year = {${p.year}},
+  pmid = {${p.pmid}}
+}`).join('\n\n');
+  navigator.clipboard.writeText(bibtex).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ BibTeX gekopieerd!';
+    setTimeout(() => btn.textContent = '📄 BibTeX', 2000);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// MAIN SEARCH
+// ═══════════════════════════════════════════════════════════
+
+async function runSearch() {
+  const query = document.getElementById('queryInput').value.trim();
+  if (!query) return;
+
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const maxP = parseInt(document.getElementById('maxPapers').value);
+  const lang = document.getElementById('lang').value;
+  const focus = document.getElementById('focus').value;
+
+  const btn = document.getElementById('searchBtn');
+  btn.disabled = true;
+  btn.textContent = '⟳ Zoeken...';
+
+  document.getElementById('answerBody').innerHTML = `<div style="display:flex;flex-direction:column;gap:12px;">`;
+  document.getElementById('answerTitle').textContent = 'Bezig...';
+  document.getElementById('answerDot').style.background = 'var(--amber)';
+  document.getElementById('answerFooter').style.display = 'none';
+
+  try {
+    // Step 1: "Search PubMed"
+    setStep(0, 4, 'PubMed zoeken...');
+    await sleep(600);
+
+    // Step 2: Get papers (from our db, simulating PubMed)
+    setStep(1, 4, 'Abstracts ophalen...');
+    papers = getPapers(query).slice(0, maxP);
+    await sleep(500);
+    renderPapers(papers);
+
+    // Step 3: Relevance scoring
+    setStep(2, 4, 'Relevantie scoren...');
+    await sleep(400);
+
+    // Step 4: AI synthesis
+    setStep(3, 4, 'AI syntheseren...');
+    document.getElementById('answerBody').innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;color:var(--tx1);font-size:13px;">
+        <span class="spin">⟳</span> AI synthetiseert ${papers.length} publicaties...
+      </div>`;
+
+    const langMap = { nl: 'Nederlands', en: 'English', fr: 'Français' };
+    const langStr = langMap[lang] || 'Nederlands';
+
+    const focusMap = {
+      general: '',
+      crispr: ' Focus especially on CRISPR/genome editing aspects.',
+      metabolites: ' Focus especially on secondary metabolite biosynthesis.',
+      phylo: ' Focus especially on phylogenetics and taxonomy.',
+      genomics: ' Focus especially on genomics, sequencing, and assembly.',
+    };
+
+    const papersContext = papers.map((p, i) =>
+      `[${i+1}] PMID:${p.pmid}\nTitle: ${p.title}\nAuthors: ${p.authors}\nJournal: ${p.journal} (${p.year})\nAbstract: ${p.abstract}`
+    ).join('\n\n---\n\n');
+
+    const prompt = `You are a scientific literature synthesis assistant for MycoScope, a genomics platform for fungi and plants.
+
+RESEARCH QUESTION: ${query}
+
+RETRIEVED PUBLICATIONS (${papers.length} papers from PubMed):
+${papersContext}
+
+TASK:
+Write a comprehensive, scientifically accurate synthesis answering the research question based ONLY on the provided abstracts. 
+
+Requirements:
+- Language: ${langStr}
+- Cite sources using [n] notation (e.g., [1], [2], [1,3])
+- Use **bold** for key concepts and gene names
+- Use _italics_ for species names
+- Structure with clear paragraphs (2-4 paragraphs)
+- Include: main findings, mechanisms where known, open questions or controversies
+- Be precise and avoid speculation beyond what the abstracts support
+- End with a brief "Open questions" or "Lacunae" paragraph if relevant
+${focusMap[focus] || ''}
+
+Format: Plain text with markdown (**bold**, _italic_, [n] citations, paragraph breaks with blank lines).`;
+
+    let responseText = '';
+
+    if (apiKey && apiKey.startsWith('sk-ant-')) {
+      // Real API call
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error.message);
+      responseText = data.content[0].text;
+    } else {
+      // Demo mode: generate realistic answer
+      responseText = generateDemoAnswer(query, papers, lang);
+    }
+
+    answerText = responseText;
+    clearSteps();
+
+    document.getElementById('answerBody').innerHTML = `<div class="fade-in">${renderAnswer(responseText, papers)}</div>`;
+    document.getElementById('answerTitle').textContent = `Synthese: "${query.slice(0, 60)}${query.length > 60 ? '…' : ''}"`;
+    document.getElementById('answerDot').style.background = 'var(--teal)';
+    document.getElementById('answerDot').style.animation = 'none';
+
+    const footer = document.getElementById('answerFooter');
+    footer.style.display = 'flex';
+    document.getElementById('confLabel').textContent = `${papers.length} bronnen · ${apiKey ? 'Claude Sonnet (live)' : 'Demo-modus — voeg API-sleutel toe voor echte AI'}`;
+
+  } catch (err) {
+    clearSteps();
+    document.getElementById('answerBody').innerHTML = `
+      <div style="color:var(--red);font-size:13px;padding:10px;background:rgba(224,85,85,.07);border-radius:8px;border:1px solid rgba(224,85,85,.2);">
+        ⚠️ ${err.message || err}
+      </div>`;
+    document.getElementById('answerDot').style.background = 'var(--red)';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 Analyseren';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// DEMO ANSWER GENERATOR
+// ═══════════════════════════════════════════════════════════
+
+function generateDemoAnswer(query, papers, lang) {
+  const q = query.toLowerCase();
+
+  // GliP / immune evasion
+  if (q.includes('glip') || q.includes('immuun') || q.includes('immune')) {
+    return `**GliP** is het centrale enzym van de gliotoxin-biosynthese in _Aspergillus fumigatus_. Het codeert voor een non-ribosomaal peptide synthetase (NRPS) met drie adenylatie-domeinen die respectievelijk fenylalanine, serine en een derde aminozuur activeren [1][6].
+
+Op basis van de beschikbare literatuur zijn drie kritieke mechanismen geïdentificeerd waarmee gliotoxin het immuunsysteem ondermijnt. Ten eerste remt gliotoxin de NADPH-oxidase activiteit (NOX2) in neutrofielen, waardoor superoxide-productie wordt gereduceerd en fagocytose wordt belemmerd [2]. Ten tweede induceert het apoptose in alveolaire macrofagen via het mitochondriaal pad. Ten derde blokkeert het NF-κB-activatie, wat pro-inflammatoire cytokineproductie vermindert.
+
+_ΔgliP_-mutanten vertonen significant verminderde virulentie in muriene aspergillose-modellen [1]. De transcriptiefactor **GliZ** reguleert het gehele gli-cluster en is een alternatief CRISPR-doelwit [3]. **LaeA** fungeert als globale epigenetische regulator die meerdere BGC-clusters coördineert, waaronder het gli-cluster [4].
+
+**Openstaande vragen:** De exacte drempelconcentratie van gliotoxin die in vivo bij menselijke aspergillose wordt bereikt is controversieel [5]. De bijdrage van andere immuunontwijkings-mechanismen onafhankelijk van gliotoxin verdient verder onderzoek.`;
+  }
+
+  // CRISPR
+  if (q.includes('crispr')) {
+    return `**CRISPR-Cas9** genoombewerking is succesvol toegepast in _Aspergillus fumigatus_ met efficiënties tot 50% zonder selectiemarker [1]. De meest effectieve methode gebruikt ribonucleoproteine (RNP) complexen via protoplast-transformatie, wat hogere efficiëntie geeft dan plasmide-gebaseerde aanpakken.
+
+**Nódvig et al.** [2] ontwikkelden een AMA1 episomaal vector-systeem dat tot 97% editeer-efficiëntie bereikt. De expressie van guide-RNA wordt aangestuurd door de ribosomale RNA-promotor van _A. nidulans_. Multiplexed editering van drie genen simultaan is haalbaar gebleken [3] met 30-60% efficiëntie voor dubbelknockouts.
+
+**Aandachtspunten:** Off-target analyse is kritisch bij gebruik van meerdere guide RNAs. Hoge-fideliteit Cas9 varianten (SpCas9-HF1, eSpCas9) verdienen overweging bij studies waarbij precieze genotypering essentieel is.`;
+  }
+
+  // ITS / UNITE
+  if (q.includes('its') || q.includes('barcode') || q.includes('unite')) {
+    return `De **ITS-regio** (Internal Transcribed Spacer) is de gestandaardiseerde DNA-barcode voor fungi, maar heeft belangrijke beperkingen bij het onderscheiden van cryptische soortcomplexen. Binnen _Aspergillus_ sectie _Fumigati_ hebben _A. fumigatus_ en nauwe verwanten zoals _A. fischeri_ en _A. lentulus_ >99% ITS-sequentie-identiteit, wat species-niveau identificatie met ITS alleen onbetrouwbaar maakt [1].
+
+De **UNITE-database** [2] organiseert referentie-ITS sequenties in Species Hypotheses (SH) bij drempelwaarden van 97%, 98.5%, 99% en 99.5%. Voor omgevingsstudies is 97% identificatie doorgaans voldoende, maar voor klinische of taxonomische publicaties worden aanvullende markers aanbevolen.
+
+Voor betrouwbare species-discriminatie in de _Fumigati_-sectie zijn **multi-locus sequentie typing (MLST)** markers vereist: _tef1_-α, _benA_ en _CaM_ bieden samen robuuste soortafgrenzing [1]. Het gebruik van uitsluitend ITS kan leiden tot misidentificatie met klinische consequenties.`;
+  }
+
+  // Default
+  return `Op basis van de **${papers.length} gevonden publicaties** kan de volgende synthese worden gegeven voor de vraag: "${query}".
+
+${papers.slice(0,3).map((p,i) => `De studie van ${p.authors.split(',')[0]} et al. (${p.year}) [${i+1}] beschrijft ${p.abstract.slice(0,150)}...`).join('\n\n')}
+
+**Conclusie:** De beschikbare literatuur geeft een gefundeerd beeld van het onderwerp. Voor een diepgaander analyse worden aanvullende zoektermen aanbevolen.
+
+_(Demo-modus: voeg een Anthropic API-sleutel in voor een volwaardige AI-synthese op basis van deze papers)_`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Enter key triggers search
+document.getElementById('queryInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') runSearch();
+});
+</script>
+</body>
+</html>

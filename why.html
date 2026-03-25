@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MycoScope Cursus — Waarom dit alles ertoe doet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050810;--bg1:#08091A;--bg2:#0C1020;--bg3:#111628;--bg4:#171F35;
+  --gold:#C8960A;--gold2:#F0B429;--gold3:#6A4E00;
+  --teal:#1DBFAA;--teal2:#0D8A7B;--teal3:#053F3A;
+  --purple:#7B68EE;--red:#C0392B;--green:#27AE60;
+  --tx:#DCE8F8;--tx1:#8898B4;--tx2:#3A4A68;
+  --mono:'DM Mono',monospace;
+  --serif:'Crimson Pro',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+  --bd:rgba(255,255,255,.055);--bd2:rgba(255,255,255,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);overflow-x:hidden;}
+
+/* ─── WHY HERO (fullscreen, cinematic) ─── */
+.why-hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;position:relative;overflow:hidden;}
+.star-field{position:absolute;inset:0;}
+.star{position:absolute;border-radius:50%;background:#fff;}
+.why-glow{position:absolute;width:100%;height:100%;background:radial-gradient(ellipse 60% 50% at 50% 45%,rgba(200,150,10,.08) 0%,transparent 70%);pointer-events:none;}
+
+.why-label{font-family:var(--mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold2);margin-bottom:28px;opacity:0;animation:fadeUp .8s .3s ease both;}
+.why-title{font-family:var(--serif);font-size:clamp(44px,6vw,88px);font-weight:300;line-height:1.06;letter-spacing:-1px;margin-bottom:22px;opacity:0;animation:fadeUp .8s .5s ease both;}
+.why-title em{font-style:italic;color:var(--gold2);}
+.why-sub{font-family:var(--serif);font-size:clamp(17px,2vw,22px);color:var(--tx1);max-width:620px;margin:0 auto 44px;line-height:1.7;font-weight:300;font-style:italic;opacity:0;animation:fadeUp .8s .7s ease both;}
+.why-scroll{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--tx2);opacity:0;animation:fadeUp .8s 1.1s ease both;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.why-scroll-arr{animation:bob 2s ease-in-out infinite;}
+
+/* ─── GOLDEN CIRCLE VISUAL ─── */
+.gc-visual{width:100%;max-width:540px;margin:0 auto 44px;opacity:0;animation:fadeUp .8s .9s ease both;}
+.gc-rings{position:relative;width:280px;height:280px;margin:0 auto;}
+.gc-ring{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;}
+.gc-why{width:100%;height:100%;top:0;left:0;background:radial-gradient(circle,rgba(200,150,10,.18) 0%,rgba(200,150,10,.04) 60%,transparent 80%);border:2px solid rgba(200,150,10,.35);}
+.gc-how{width:65%;height:65%;top:17.5%;left:17.5%;background:rgba(29,191,170,.08);border:2px solid rgba(29,191,170,.25);}
+.gc-what{width:33%;height:33%;top:33.5%;left:33.5%;background:rgba(123,104,238,.12);border:2px solid rgba(123,104,238,.35);display:flex;align-items:center;justify-content:center;}
+.gc-label{position:absolute;text-align:center;}
+.gc-label-why{top:8px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--gold2);}
+.gc-label-how{top:28%;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--teal);}
+.gc-label-what{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--purple);}
+
+/* ─── SECTION BASE ─── */
+.section{padding:96px 0;position:relative;}
+.container{max-width:1060px;margin:0 auto;padding:0 44px;}
+.section-circle{display:inline-flex;align-items:center;gap:10px;margin-bottom:16px;}
+.sc-ring{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:500;}
+.sc-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;}
+.section-title{font-family:var(--serif);font-size:clamp(32px,4.5vw,58px);font-weight:300;line-height:1.1;margin-bottom:16px;}
+.section-title em{font-style:italic;}
+.section-body{font-size:16px;color:var(--tx1);line-height:1.85;font-weight:300;max-width:680px;}
+.section-body strong{color:var(--tx);font-weight:500;}
+
+/* ─── STORY CARDS (WHY section) ─── */
+.story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border-radius:14px;overflow:hidden;margin-top:40px;}
+.story-card{background:var(--bg2);padding:28px;}
+.sc-year{font-family:var(--mono);font-size:11px;color:var(--gold2);margin-bottom:8px;letter-spacing:1px;}
+.sc-title{font-family:var(--serif);font-size:19px;color:var(--tx);margin-bottom:10px;line-height:1.3;}
+.sc-body{font-size:13px;color:var(--tx1);line-height:1.75;}
+.sc-impact{margin-top:12px;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;}
+.sc-impact-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* ─── PULLQUOTE ─── */
+.pullquote{padding:72px 44px;text-align:center;position:relative;}
+.pullquote::before{content:'"';font-family:var(--serif);font-size:140px;color:rgba(200,150,10,.1);position:absolute;top:-20px;left:50%;transform:translateX(-50%);line-height:1;pointer-events:none;}
+.pq-text{font-family:var(--serif);font-size:clamp(20px,3vw,32px);font-weight:300;font-style:italic;color:var(--tx);line-height:1.5;max-width:700px;margin:0 auto 16px;position:relative;z-index:1;}
+.pq-attr{font-family:var(--mono);font-size:10px;color:var(--tx2);letter-spacing:1.5px;}
+
+/* ─── WHY YOU SECTION ─── */
+.why-you-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:40px;}
+.wy-item{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:24px;}
+.wy-icon{font-size:36px;margin-bottom:12px;}
+.wy-title{font-family:var(--serif);font-size:20px;color:var(--tx);margin-bottom:8px;line-height:1.3;}
+.wy-body{font-size:13px;color:var(--tx1);line-height:1.75;}
+
+/* ─── HOW SECTION (process) ─── */
+.how-steps{display:flex;flex-direction:column;gap:0;margin-top:36px;}
+.how-step{display:grid;grid-template-columns:60px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid var(--bd);}
+.how-step:last-child{border-bottom:none;}
+.how-num{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:500;flex-shrink:0;margin-top:2px;}
+.how-title{font-size:16px;font-weight:500;color:var(--tx);margin-bottom:6px;}
+.how-body{font-size:14px;color:var(--tx1);line-height:1.7;}
+.how-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.how-tool{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;background:var(--bg3);color:var(--tx2);border:1px solid var(--bd);}
+
+/* ─── WHAT SECTION (course structure) ─── */
+.unit-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:36px;}
+.unit-card{background:var(--bg2);border:1px solid var(--bd);border-radius:11px;padding:18px;transition:border-color .2s,transform .2s;}
+.unit-card:hover{border-color:var(--bd2);transform:translateY(-2px);}
+.uc-icon{font-size:28px;margin-bottom:10px;}
+.uc-num{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--tx2);margin-bottom:5px;text-transform:uppercase;}
+.uc-title{font-size:14px;font-weight:500;color:var(--tx);margin-bottom:6px;line-height:1.3;}
+.uc-lessons{font-size:11px;color:var(--tx2);font-family:var(--mono);}
+.uc-tag{display:inline-block;font-size:8px;padding:1px 6px;border-radius:3px;margin-top:8px;font-family:var(--mono);}
+
+/* ─── CTA ─── */
+.cta-section{padding:96px 0;text-align:center;background:linear-gradient(to bottom,var(--bg),rgba(200,150,10,.04),var(--bg));}
+.cta-title{font-family:var(--serif);font-size:clamp(34px,5vw,66px);font-weight:300;color:var(--tx);margin-bottom:16px;line-height:1.1;}
+.cta-sub{font-size:16px;color:var(--tx1);margin-bottom:36px;line-height:1.7;max-width:540px;margin-left:auto;margin-right:auto;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;padding:15px 36px;border-radius:11px;background:linear-gradient(135deg,var(--gold3),rgba(106,78,0,.6));border:1px solid var(--gold);color:var(--gold2);font-size:16px;font-weight:500;text-decoration:none;font-family:var(--sans);transition:all .2s;cursor:pointer;}
+.cta-btn:hover{background:linear-gradient(135deg,rgba(200,150,10,.3),rgba(106,78,0,.8));transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,150,10,.15);}
+.cta-note{margin-top:14px;font-size:11px;font-family:var(--mono);color:var(--tx2);}
+
+/* ─── FOOTER ─── */
+footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s,transform .65s;}
+.reveal.vis{opacity:1;transform:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+@media(max-width:768px){
+  .container{padding:0 18px;}
+  .story-grid,.why-you-grid,.unit-cards{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ WHY HERO ══ -->
+<section class="why-hero">
+  <div class="star-field" id="stars"></div>
+  <div class="why-glow"></div>
+
+  <div class="why-label">De cursus · Simon Sinek's Golden Circle</div>
+
+  <h1 class="why-title">Niet <em>wat</em> we doen.<br>Niet <em>hoe</em> we het doen.<br>Maar <em>waarom</em> het ertoe doet.</h1>
+
+  <p class="why-sub">Elk antibioticum dat je ooit nam, redde ooit iemands leven dankzij een schimmel. Elke therapie die vandaag kankercellen bestrijdt, begon met iemand die een genoom las. Dit is die vaardigheid.</p>
+
+  <!-- Golden Circle visual -->
+  <div class="gc-visual">
+    <div class="gc-rings">
+      <div class="gc-ring gc-why">
+        <div class="gc-label gc-label-why">WAAROM</div>
+      </div>
+      <div class="gc-ring gc-how">
+        <div class="gc-label gc-label-how">HOE</div>
+      </div>
+      <div class="gc-ring gc-what">
+        <div class="gc-label-what">WAT</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px;font-size:11px;font-family:var(--mono);color:var(--tx2);line-height:1.7;">
+      Meeste cursussen beginnen bij WAT (tools, code, syntax).<br>
+      Wij beginnen bij WAAROM — de reden dat het de moeite waard is.
+    </div>
+  </div>
+
+  <div class="why-scroll">
+    <span>Begin het verhaal</span>
+    <span class="why-scroll-arr">↓</span>
+  </div>
+</section>
+
+<!-- ══ WHY: HET VERHAAL ══ -->
+<section class="section" id="why" style="background:var(--bg1);">
+<div class="container">
+  <div class="reveal">
+    <div class="section-circle">
+      <div class="sc-ring" style="background:rgba(200,150,10,.15);border:2px solid rgba(200,150,10,.4);color:var(--gold2);">W</div>
+      <span class="sc-label" style="color:var(--gold2);">Waarom · Purpose · Cause · Belief</span>
+    </div>
+    <h2 class="section-title">Elk leven dat ik ken,<br>werd <em style="color:var(--gold2);">gered door een schimmel.</em></h2>
+    <p class="section-body">
+      Je weet het waarschijnlijk niet, maar elke keer dat je antibiotica slikte, hielp een schimmel je overleven. Elke orgaantransplantatie die werkte, lukte dankzij cyclosporine — uit een bodemschimmel geïsoleerd in Noorwegen in 1969.
+      <br><br>
+      <strong>97% van alle schimmelsoorten is nooit beschreven.</strong> Dat zijn miljoenen soorten die we niet kennen, niet begrijpen, nooit bestudeerd hebben. Elke onbekende soort is een bibliotheek vol chemische verbindingen die we nog nooit gelezen hebben.
+      <br><br>
+      Jij kan die bibliotheken openen. Met een MinION op je bureau, een laptop, en de kennis die je in deze cursus opdoet, kun je het genoom lezen van een schimmel die nog nooit iemand heeft bestudeerd. Dat is niet overdreven. Dat is letterlijk waar.
+    </p>
+  </div>
+
+  <!-- Story cards -->
+  <div class="story-grid reveal" style="transition-delay:.1s;">
+    <div class="story-card">
+      <div class="sc-year">1928 · Londen</div>
+      <div class="sc-title">Het beschimmelde petrischaaltje dat de wereld veranderde</div>
+      <div class="sc-body">Alexander Fleming vergat zijn laboratorium op te ruimen voor zijn vakantie. Toen hij terugkwam, had <em>Penicillium notatum</em> zijn bacteriën gekaapt. De schimmel had een chemisch wapen geperfectioneerd over miljarden jaren evolutie. Fleming zag het. De rest is geschiedenis.</div>
+      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--gold2);"></div><span style="color:var(--gold2);">~200.000 levens gered in WOII. Miljoenen sindsdien.</span></div>
+    </div>
+    <div class="story-card">
+      <div class="sc-year">1969 · Noorwegen</div>
+      <div class="sc-title">De bodemschimmel die orgaantransplantaties mogelijk maakte</div>
+      <div class="sc-body">Sandoz-onderzoekers namen bodemmonsters mee van een vakantie in Noorwegen. Eén monster bevatte <em>Tolypocladium inflatum</em> — een schimmel die cyclosporine maakt. Zonder dit immunosuppressivum zouden alle getransplanteerde harten en nieren zijn afgestoten.</div>
+      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--teal);"></div><span style="color:var(--teal);">Elk jaar 140.000+ orgaantransplantaties mogelijk gemaakt.</span></div>
+    </div>
+    <div class="story-card">
+      <div class="sc-year">Nu · Jouw bureau</div>
+      <div class="sc-title">De ontdekking die jij kunt maken</div>
+      <div class="sc-body">Een MinION past in je zak. Een gram bodem bevat honderden schimmelsoorten. Met MycoScope en de kennis uit deze cursus kun je hun genomen lezen, hun biosynthese-clusters vinden, hun chemie begrijpen — en misschien de volgende levensreddende verbinding identificeren.</div>
+      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--purple);"></div><span style="color:var(--purple);">97% van alle schimmelsoorten: nog niet beschreven.</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div style="height:1px;background:linear-gradient(to right,transparent,var(--bd) 20%,var(--bd) 80%,transparent);position:relative;z-index:1;"></div>
+
+<!-- PULLQUOTE 1 -->
+<div class="pullquote reveal">
+  <p class="pq-text">Mensen kopen niet wat je doet. Ze kopen waarom je het doet.</p>
+  <div class="pq-attr">— Simon Sinek · Start With Why, 2009</div>
+</div>
+
+<div style="height:1px;background:linear-gradient(to right,transparent,var(--bd) 20%,var(--bd) 80%,transparent);position:relative;z-index:1;"></div>
+
+<!-- ══ WHY: WAAROM DIT VOOR JOU ══ -->
+<section class="section" style="background:var(--bg1);">
+<div class="container">
+  <div class="reveal">
+    <div class="section-circle">
+      <div class="sc-ring" style="background:rgba(200,150,10,.15);border:2px solid rgba(200,150,10,.4);color:var(--gold2);">W</div>
+      <span class="sc-label" style="color:var(--gold2);">Waarom jij · Persoonlijke impact</span>
+    </div>
+    <h2 class="section-title">Wat jij ermee <em style="color:var(--gold2);">kunt doen</em></h2>
+    <p class="section-body">Bioinformatica is niet meer een specialisme voor computerwetenschappers. Het is een basisvaardigheid geworden — zoals statistiek of lab-technieken. De tools zijn nu zo toegankelijk dat elke bioloog, schimmelonderzoeker, of veldecolog ze kan gebruiken.</p>
+  </div>
+
+  <div class="why-you-grid reveal" style="transition-delay:.1s;">
+    <div class="wy-item">
+      <div class="wy-icon">🦠</div>
+      <div class="wy-title">Als je met schimmels of planten werkt</div>
+      <div class="wy-body">Jij hebt nu directe toegang tot de complete genetische blauwdruk van je organisme. Welk gen is verantwoordelijk voor virulentie? Welke biosynthese-clusters zijn actief? Hoe verhoudt jouw stam zich tot andere? Vragen die vroeger weken of maanden kostten, beantwoord je nu in uren.</div>
+    </div>
+    <div class="wy-item">
+      <div class="wy-icon">🏥</div>
+      <div class="wy-title">Als je in medisch onderzoek werkt</div>
+      <div class="wy-body">Invasieve aspergillose doodt 50% van de patiënten. Antibioticaresistentie doodt 1,3 miljoen mensen per jaar. CRISPR-gebaseerde diagnostiek en behandelingen zijn in opkomst. De kennis in deze cursus is direct relevant voor het zoeken naar nieuwe targets en behandelingen.</div>
+    </div>
+    <div class="wy-item">
+      <div class="wy-icon">🌍</div>
+      <div class="wy-title">Als je in ecologie of landbouw werkt</div>
+      <div class="wy-body">90% van landplanten leeft in symbiose met schimmels. Schimmelziekten vernietigen 20-30% van alle gewasopbrengsten. ITS-barcode metagenomics kan de complete mycobioom van een bodemmonster in kaart brengen — van één gram grond tot de complete schimmelbiodiversiteit van een ecosysteem.</div>
+    </div>
+    <div class="wy-item">
+      <div class="wy-icon">🎓</div>
+      <div class="wy-title">Als je student of docent bent</div>
+      <div class="wy-body">Deze cursus bereidt je voor op Coursera-specialisaties (Bioinformatics Specialization UC San Diego, Genomic Data Science JHU) en op echte wetenschappelijke projecten. Na deze cursus spreek je de taal van genomics — en kun je de tools begrijpen die de biologische revolutie van deze eeuw aandrijven.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PULLQUOTE 2 -->
+<div class="pullquote reveal" style="background:var(--bg1);">
+  <p class="pq-text">De vraag is niet of we de gereedschappen hebben om het genoom te lezen. De vraag is of we de moed hebben om de consequenties van de antwoorden te dragen.</p>
+  <div class="pq-attr">— Francis Collins · directeur NIH, 2003 (bij voltooiing Humaan Genoomproject)</div>
+</div>
+
+<!-- ══ HOW: HET PROCES ══ -->
+<section class="section" id="how">
+<div class="container">
+  <div class="reveal">
+    <div class="section-circle">
+      <div class="sc-ring" style="background:rgba(29,191,170,.12);border:2px solid rgba(29,191,170,.3);color:var(--teal);">H</div>
+      <span class="sc-label" style="color:var(--teal);">Hoe · Process · Method</span>
+    </div>
+    <h2 class="section-title">Van DNA tot <em style="color:var(--teal);">betekenis</em></h2>
+    <p class="section-body">Genomics is geen magie. Het is een reeks stappen — elk begrijpelijk, elk met een duidelijke reden. Dit is het proces dat je leert beheersen.</p>
+  </div>
+
+  <div class="how-steps reveal" style="transition-delay:.1s;">
+    <div class="how-step">
+      <div class="how-num" style="background:rgba(200,150,10,.1);border:1px solid rgba(200,150,10,.25);color:var(--gold2);">1</div>
+      <div>
+        <div class="how-title">DNA isoleren en sequencen</div>
+        <div class="how-body">Het begint in het lab: DNA uit een cel extraheren, amplificeren waar nodig, en door een sequencing-machine sturen. Illumina leest korte stukjes snel en goedkoop. Nanopore leest lange stukjes in real-time, past in je zak, en kost &lt;$1000 voor het apparaat zelf.</div>
+        <div class="how-tools"><span class="how-tool">MinION</span><span class="how-tool">Illumina MiSeq</span><span class="how-tool">Nanopore R10.4</span></div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="how-num" style="background:rgba(29,191,170,.08);border:1px solid rgba(29,191,170,.2);color:var(--teal);">2</div>
+      <div>
+        <div class="how-title">Kwaliteitscontrole en assembly</div>
+        <div class="how-body">Ruwe reads zijn imperfect. Kwaliteitsfiltering verwijdert slechte reads. Assembly plakt overlappende reads samen tot chromosomen — zoals een puzzel zonder voorbeeldplaatje. Het resultaat: de volledige DNA-sequentie van het organisme, scaffold voor scaffold.</div>
+        <div class="how-tools"><span class="how-tool">Dorado (basecalling)</span><span class="how-tool">NanoFilt</span><span class="how-tool">Flye (assembly)</span><span class="how-tool">BUSCO (QC)</span></div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="how-num" style="background:rgba(123,104,238,.08);border:1px solid rgba(123,104,238,.2);color:var(--purple);">3</div>
+      <div>
+        <div class="how-title">Genen annoteren en vergelijken</div>
+        <div class="how-body">Een ruwe DNA-sequentie is als een boek zonder spaties of leestekens. Annotatie voegt structuur toe: het identificeert genen, exonen, introns, promotoren. Vergelijkende genomics toont welke genen geconserveerd zijn over soorten heen — en welke uniek zijn voor jouw organisme.</div>
+        <div class="how-tools"><span class="how-tool">AUGUSTUS</span><span class="how-tool">Funannotate</span><span class="how-tool">FungiDB</span><span class="how-tool">antiSMASH</span></div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="how-num" style="background:rgba(224,85,85,.08);border:1px solid rgba(224,85,85,.2);color:var(--red);">4</div>
+      <div>
+        <div class="how-title">Experimenteel interveniëren</div>
+        <div class="how-body">CRISPR-Cas9 maakt het mogelijk om specifieke genen uit te schakelen of te wijzigen. Je ontwerpt een 20-nucleotide guide RNA, transformeert het organisme, en valideert het resultaat met sequencing. De complete cirkel: ontdekking → hypothese → experiment → bevestiging.</div>
+        <div class="how-tools"><span class="how-tool">SpCas9 (NGG PAM)</span><span class="how-tool">CFD scoring</span><span class="how-tool">Minimap2 + bcftools</span></div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="how-num" style="background:rgba(39,174,96,.08);border:1px solid rgba(39,174,96,.2);color:var(--green);">5</div>
+      <div>
+        <div class="how-title">Publiceren en delen</div>
+        <div class="how-body">Wetenschap bestaat pas als het gedeeld wordt. Data deponeren in NCBI, methoden documenteren, figuren maken die het verhaal vertellen. MycoScope genereert de methoden-paragraaf, figuren en supplementary-tabellen automatisch — klaar voor indiening bij Nature, mBio, of PLOS.</div>
+        <div class="how-tools"><span class="how-tool">NCBI GenBank</span><span class="how-tool">FAIR data</span><span class="how-tool">Snakemake / Nextflow</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ WHAT: DE CURSUSINHOUD ══ -->
+<section class="section" id="what" style="background:var(--bg1);">
+<div class="container">
+  <div class="reveal">
+    <div class="section-circle">
+      <div class="sc-ring" style="background:rgba(123,104,238,.1);border:2px solid rgba(123,104,238,.28);color:var(--purple);">W</div>
+      <span class="sc-label" style="color:var(--purple);">Wat · The course · 5 eenheden · ~5 uur</span>
+    </div>
+    <h2 class="section-title">De <em style="color:var(--purple);">vijf eenheden</em></h2>
+    <p class="section-body">Nu je weet waarom het ertoe doet en hoe het proces werkt, is dit wat je concreet leert. Elke eenheid bouwt voort op de vorige. Je hoeft niets vooraf te weten.</p>
+  </div>
+
+  <div class="unit-cards reveal" style="transition-delay:.1s;">
+    <div class="unit-card">
+      <div class="uc-icon">🧬</div>
+      <div class="uc-num">Eenheid 1</div>
+      <div class="uc-title">DNA & Moleculaire Basis</div>
+      <div class="uc-lessons">5 lessen · ~84 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">Van het ontdekken van de dubbelhelix tot het centrale dogma. Genen, chromosomen, GC-gehalte.</div>
+      <span class="uc-tag" style="background:rgba(29,191,170,.1);color:var(--teal);">Geen voorkennis nodig</span>
+    </div>
+    <div class="unit-card">
+      <div class="uc-icon">🔬</div>
+      <div class="uc-num">Eenheid 2</div>
+      <div class="uc-title">Sequencing & Data</div>
+      <div class="uc-lessons">5 lessen · ~82 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">FASTQ-formaat, kwaliteitsscores, assembly-statistieken (N50, BUSCO), de MinION-pipeline.</div>
+      <span class="uc-tag" style="background:rgba(123,104,238,.1);color:var(--purple);">Praktisch</span>
+    </div>
+    <div class="unit-card">
+      <div class="uc-icon">✂️</div>
+      <div class="uc-num">Eenheid 3</div>
+      <div class="uc-title">CRISPR & Editering</div>
+      <div class="uc-lessons">5 lessen · ~84 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">Cas9, PAM-sequenties, gRNA-ontwerp, off-target analyse, base editing, prime editing.</div>
+      <span class="uc-tag" style="background:rgba(224,85,85,.1);color:var(--red);">Nobelprijs 2020</span>
+    </div>
+    <div class="unit-card">
+      <div class="uc-icon">🌳</div>
+      <div class="uc-num">Eenheid 4</div>
+      <div class="uc-title">Vergelijkende Genomics</div>
+      <div class="uc-lessons">3 lessen · ~48 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">Fylogenie, ITS-barcode, UNITE-database, biosynthese-clusters, secundaire metabolieten.</div>
+      <span class="uc-tag" style="background:rgba(72,199,116,.1);color:var(--green);">Schimmelfocus</span>
+    </div>
+    <div class="unit-card">
+      <div class="uc-icon">📊</div>
+      <div class="uc-num">Eenheid 5</div>
+      <div class="uc-title">Data-analyse & Publicatie</div>
+      <div class="uc-lessons">5 lessen · ~76 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">RNA-seq, differentiële expressie, statistiek, FAIR-data, reproduceerbare analyse, publiceren.</div>
+      <span class="uc-tag" style="background:rgba(200,150,10,.1);color:var(--gold2);">→ Coursera-ready</span>
+    </div>
+  </div>
+
+  <!-- Coursera follow-up -->
+  <div style="margin-top:36px;background:linear-gradient(135deg,rgba(123,104,238,.08),rgba(29,191,170,.04));border:1px solid rgba(123,104,238,.2);border-radius:14px;padding:28px;" class="reveal" style="transition-delay:.2s;">
+    <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="font-size:40px;">🎓</div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:8px;">Na deze cursus: aanbevolen vervolgpaden</div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+          <a href="https://www.coursera.org/specializations/bioinformatics" target="_blank" style="padding:10px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--bd)'">
+            <div style="font-size:12px;font-weight:500;color:var(--tx);">Bioinformatics Specialization</div>
+            <div style="font-size:10px;font-family:var(--mono);color:var(--teal);margin-top:3px;">UC San Diego · Pevzner & Compeau · 7 cursussen</div>
+          </a>
+          <a href="https://www.coursera.org/specializations/genomic-data-science" target="_blank" style="padding:10px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--purple)'" onmouseout="this.style.borderColor='var(--bd)'">
+            <div style="font-size:12px;font-weight:500;color:var(--tx);">Genomic Data Science</div>
+            <div style="font-size:10px;font-family:var(--mono);color:var(--purple);margin-top:3px;">Johns Hopkins · 8 cursussen · Praktisch</div>
+          </a>
+          <a href="http://rosalind.info" target="_blank" style="padding:10px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--amber)'" onmouseout="this.style.borderColor='var(--bd)'">
+            <div style="font-size:12px;font-weight:500;color:var(--tx);">Rosalind.info</div>
+            <div style="font-size:10px;font-family:var(--mono);color:var(--amber);margin-top:3px;">Gratis · Bioinformatica-puzzels · Python</div>
+          </a>
+          <a href="https://www.ebi.ac.uk/training" target="_blank" style="padding:10px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='var(--bd)'">
+            <div style="font-size:12px;font-weight:500;color:var(--tx);">EMBL-EBI Training</div>
+            <div style="font-size:10px;font-family:var(--mono);color:var(--green);margin-top:3px;">Gratis · Online workshops · EU</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section">
+  <div class="container reveal">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:16px;">Nu je weet waarom</div>
+    <h2 class="cta-title">Klaar om te <em style="font-style:italic;">beginnen</em>?</h2>
+    <p class="cta-sub">97% van alle schimmelsoorten is onontdekt. Elk ongesequenceerd genoom is een bibliotheek die nog nooit iemand opengeslagen heeft. De tools bestaan. De kennis is hier.</p>
+    <a href="mycoscope-cursus.html#cursus" class="cta-btn">Begin de cursus — gratis →</a>
+    <div class="cta-note">Geen aanmelding vereist · Geen kosten · Werkt offline (PWA)</div>
+  </div>
+</section>
+
+<footer>
+  <div style="font-family:var(--mono);font-size:10px;color:var(--tx2);">MycoScope Cursus · Start With Why · Simon Sinek's Golden Circle</div>
+  <a href="mycoscope-cursus.html" style="font-size:12px;color:var(--teal);text-decoration:none;">→ Naar de volledige cursus</a>
+</footer>
+
+<script>
+// Stars
+const sf = document.getElementById('stars');
+for (let i = 0; i < 200; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 2 + 0.3;
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:none;`;
+  // Subtle twinkle for some stars
+  if (Math.random() > 0.7) {
+    s.style.animation = `fadeUp ${Math.random()*3+2}s ${Math.random()*3}s ease-in-out infinite alternate`;
+  }
+  sf.appendChild(s);
+}
+
+// Reveal on scroll
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MycoScope — Opslag & Cloud Integratie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060A12;--bg1:#090E1A;--bg2:#0E1422;--bg3:#141D30;--bg4:#1B2438;--bg5:#222D48;
+  --teal:#1DBFAA;--teal2:#0D8A7B;--teal3:#053F3A;
+  --blue:#2E86DE;--blue2:#1A5FAD;--blue3:#0D3566;
+  --purple:#7B68EE;--amber:#E8A020;--red:#E05555;--green:#48C774;
+  --aws:#FF9900;--gcs:#4285F4;--azure:#0078D4;--b2:#E05555;--nas:#48C774;--smb:#7B68EE;
+  --tx:#E2ECF8;--tx1:#8898B4;--tx2:#3A4A68;
+  --bd:rgba(255,255,255,.055);--bd2:rgba(255,255,255,.11);
+  --mono:'DM Mono',monospace;--serif:'Instrument Serif',serif;--sans:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);overflow-x:hidden;font-size:15px;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(30,134,212,.04) 0%,transparent 55%);pointer-events:none;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;height:54px;display:flex;align-items:center;padding:0 32px;gap:12px;background:rgba(6,10,18,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);}
+.nlogo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--tx);text-decoration:none;}
+.nhex{width:24px;height:24px;background:var(--teal3);border:1px solid var(--teal2);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:88px 24px 60px;text-align:center;position:relative;z-index:1;}
+.hglow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(30,134,212,.06) 0%,transparent 65%);top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;}
+.hbadge{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--bd2);border-radius:100px;padding:4px 14px;font-size:10px;font-family:var(--mono);color:var(--blue);margin-bottom:18px;}
+.hdot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite;}
+h1{font-family:var(--serif);font-size:clamp(40px,5.5vw,72px);font-weight:400;line-height:1.08;margin-bottom:14px;}
+h1 em{font-style:italic;color:var(--blue);}
+.hsub{font-size:16px;color:var(--tx1);max-width:540px;margin:0 auto 36px;line-height:1.7;}
+
+/* SIZE GRAPHIC */
+.size-visual{width:100%;max-width:780px;margin:0 auto;}
+.sv-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.sv-label{width:180px;font-size:12px;color:var(--tx1);text-align:right;flex-shrink:0;}
+.sv-track{flex:1;height:24px;background:var(--bg3);border-radius:6px;overflow:hidden;position:relative;}
+.sv-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;font-size:10px;font-family:var(--mono);font-weight:500;white-space:nowrap;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.sv-size{width:80px;font-family:var(--mono);font-size:11px;text-align:left;flex-shrink:0;}
+.sv-note{font-size:10px;color:var(--tx2);text-align:center;margin-top:8px;font-style:italic;}
+
+/* PROVIDERS GRID */
+.prov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1100px;margin:0 auto;}
+
+/* SECTION */
+.sec{padding:80px 0;position:relative;z-index:1;}
+.container{max-width:1100px;margin:0 auto;padding:0 40px;}
+.sec-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+.sec-title{font-family:var(--serif);font-size:clamp(26px,3.5vw,46px);font-weight:400;line-height:1.12;margin-bottom:10px;}
+.sec-title em{font-style:italic;}
+.sec-sub{font-size:14px;color:var(--tx1);line-height:1.7;max-width:580px;margin-bottom:28px;}
+
+/* PROVIDER CARD */
+.pcard{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:border-color .2s,transform .2s;}
+.pcard:hover{border-color:var(--bd2);transform:translateY(-2px);}
+.pcard-top{padding:20px 20px 16px;border-bottom:1px solid var(--bd);}
+.pcard-logo{font-size:28px;margin-bottom:10px;}
+.pcard-name{font-size:16px;font-weight:500;color:var(--tx);margin-bottom:4px;}
+.pcard-type{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:3px;display:inline-block;}
+.pcard-body{padding:16px 20px;}
+.pcard-price{font-family:var(--mono);font-size:18px;font-weight:500;margin-bottom:4px;}
+.pcard-price-sub{font-size:11px;color:var(--tx2);margin-bottom:12px;}
+.pcard-features{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.pcard-features li{font-size:12px;color:var(--tx1);display:flex;align-items:flex-start;gap:7px;line-height:1.4;}
+.pcard-features li::before{content:'✓';color:var(--teal);font-size:10px;margin-top:2px;flex-shrink:0;}
+.pcard-features li.na::before{content:'–';color:var(--tx2);}
+.pcard-features li.na{color:var(--tx2);}
+.pcard-btn{display:block;margin:14px 0 0;padding:10px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s;}
+
+/* CONNECTION FORM */
+.conn-form{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-top:28px;}
+.cf-header{padding:14px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;background:var(--bg1);}
+.cf-tabs{display:flex;border-bottom:1px solid var(--bd);}
+.cf-tab{flex:1;padding:10px 0;text-align:center;cursor:pointer;font-size:12px;color:var(--tx2);border:none;background:none;font-family:var(--sans);border-bottom:2px solid transparent;transition:all .15s;}
+.cf-tab:hover{color:var(--tx1);}
+.cf-tab.on{color:var(--tx);border-color:var(--teal);}
+.cf-panel{display:none;padding:20px;}.cf-panel.on{display:block;}
+.cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.cf-field{display:flex;flex-direction:column;gap:5px;}
+.cf-label{font-size:10px;font-family:var(--mono);color:var(--tx2);letter-spacing:1px;text-transform:uppercase;}
+.cf-input{background:var(--bg3);border:1px solid var(--bd2);border-radius:8px;padding:9px 12px;color:var(--tx);font-family:var(--mono);font-size:12px;outline:none;transition:border-color .15s;}
+.cf-input:focus{border-color:var(--teal2);}
+.cf-input[type=password]{letter-spacing:2px;}
+.cf-select{background:var(--bg3);border:1px solid var(--bd2);border-radius:8px;padding:9px 12px;color:var(--tx1);font-family:var(--mono);font-size:12px;outline:none;}
+
+/* STORAGE BROWSER */
+.browser{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:20px;}
+.browser-bar{background:var(--bg1);padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;}
+.browser-path{flex:1;background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:5px 10px;font-family:var(--mono);font-size:11px;color:var(--teal);}
+.browser-list{overflow:y:auto;max-height:340px;}
+.browser-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;transition:background .1s;}
+.browser-row:hover{background:rgba(255,255,255,.025);}
+.browser-row.sel{background:rgba(29,191,170,.05);}
+.br-icon{font-size:16px;flex-shrink:0;width:24px;text-align:center;}
+.br-name{flex:1;font-size:12px;color:var(--tx);}
+.br-size{font-family:var(--mono);font-size:10px;color:var(--tx2);width:70px;text-align:right;}
+.br-date{font-family:var(--mono);font-size:10px;color:var(--tx2);width:90px;text-align:right;}
+.br-action{display:flex;gap:5px;}
+.bra{padding:3px 8px;border-radius:5px;font-size:9px;cursor:pointer;font-family:var(--mono);border:1px solid;transition:all .12s;}
+
+/* TRANSFER STATUS */
+.xfer-panel{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-top:14px;}
+.xfer-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.xfer-item:last-child{border-bottom:none;}
+.xfer-icon{font-size:16px;flex-shrink:0;}
+.xfer-name{flex:1;font-size:12px;color:var(--tx);}
+.xfer-bar-wrap{width:100px;height:5px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.xfer-bar{height:100%;border-radius:2px;transition:width .5s ease;}
+.xfer-size{font-family:var(--mono);font-size:10px;color:var(--tx2);width:60px;text-align:right;}
+.xfer-status{font-size:9px;font-family:var(--mono);width:50px;text-align:right;}
+
+/* NAS diagram */
+.nas-diagram{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;background:var(--bg3);border:1px solid var(--bd);border-radius:12px;padding:24px;margin-top:20px;}
+.nas-node{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center;}
+.nas-icon{font-size:32px;margin-bottom:6px;}
+.nas-label{font-size:12px;font-weight:500;color:var(--tx);margin-bottom:3px;}
+.nas-sub{font-size:10px;color:var(--tx2);font-family:var(--mono);}
+.nas-arrow{text-align:center;color:var(--teal);font-size:20px;padding:0 8px;}
+.nas-protocols{display:flex;flex-direction:column;gap:5px;padding:0 16px;}
+.nas-proto{padding:4px 10px;border-radius:6px;font-size:10px;font-family:var(--mono);text-align:center;border:1px solid;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s;}
+.btn-teal{background:var(--teal3);border:1px solid var(--teal2);color:var(--teal);}
+.btn-teal:hover{background:var(--teal2);}
+.btn-ghost{background:transparent;border:1px solid var(--bd2);color:var(--tx1);}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
+
+/* MISC */
+.divider{height:1px;background:linear-gradient(to right,transparent,var(--bd) 20%,var(--bd) 80%,transparent);position:relative;z-index:1;}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:100px;font-size:9px;font-family:var(--mono);}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s;}
+.reveal.vis{opacity:1;transform:none;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes barGrow{from{width:0!important}to{}}
+@media(max-width:860px){.prov-grid{grid-template-columns:1fr;}.cf-grid{grid-template-columns:1fr;}.nas-diagram{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="#" class="nlogo">
+    <div class="nhex"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 1.2L12 3.95V9.45L7 12.2L2 9.45V3.95L7 1.2Z" stroke="#1DBFAA" stroke-width="1.3"/><circle cx="7" cy="7" r="2" fill="#1DBFAA"/></svg></div>
+    MycoScope · Opslag & Cloud
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hglow"></div>
+  <div class="hbadge"><div class="hdot"></div>Opslag-integratie · AWS · GCS · Azure · NAS</div>
+  <h1>Genomics-data is <em>enorm</em></h1>
+  <p class="hsub">Eén Nanopore-run is 5 GB. Een pan-genomics-project is 50–200 GB. MycoScope integreert direct met cloud-providers en NAS-systemen — data blijft waar jij het wilt.</p>
+
+  <!-- SIZE VISUALIZATION -->
+  <div class="size-visual reveal">
+    <div style="font-size:10px;font-family:var(--mono);color:var(--tx2);letter-spacing:2px;text-transform:uppercase;text-align:left;margin-bottom:14px;">Vergelijking: app vs. data</div>
+    <div id="sizeViz"></div>
+    <div class="sv-note">* De app past op een USB-stick. De data vereist cloud of NAS.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CLOUD PROVIDERS -->
+<section class="sec" id="cloud" style="background:var(--bg1);">
+<div class="container">
+  <div class="reveal">
+    <div class="sec-label" style="color:var(--blue);">Cloud-opslag</div>
+    <h2 class="sec-title">Kies je <em style="color:var(--blue);">cloudprovider</em></h2>
+    <p class="sec-sub">MycoScope verbindt direct met de grote providers. Genomics-data blijft in jouw account — geen MycoScope-servers tussenin.</p>
+  </div>
+  <div class="prov-grid reveal" style="transition-delay:.1s;" id="provGrid"></div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONNECTION FORM -->
+<section class="sec" id="connect">
+<div class="container">
+  <div class="reveal">
+    <div class="sec-label" style="color:var(--teal);">Verbinding configureren</div>
+    <h2 class="sec-title">Stel je <em style="color:var(--teal);">opslag in</em></h2>
+    <p class="sec-sub">Vul je referenties in. Alle sleutels worden lokaal opgeslagen in de OS keychain (macOS Keychain, Windows Credential Manager, libsecret op Linux). Ze verlaten nooit je apparaat.</p>
+  </div>
+
+  <div class="conn-form reveal" style="transition-delay:.1s;">
+    <div class="cf-header">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></div>
+      <span style="font-size:12px;font-family:var(--mono);color:var(--tx1);">Nieuwe verbinding</span>
+      <span id="connStatus" style="margin-left:auto;font-size:10px;font-family:var(--mono);color:var(--tx2);"></span>
+    </div>
+    <div class="cf-tabs">
+      <button class="cf-tab on" onclick="showTab('s3',this)">AWS S3</button>
+      <button class="cf-tab" onclick="showTab('gcs',this)">Google Cloud</button>
+      <button class="cf-tab" onclick="showTab('azure',this)">Azure</button>
+      <button class="cf-tab" onclick="showTab('b2',this)">Backblaze B2</button>
+      <button class="cf-tab" onclick="showTab('webdav',this)">WebDAV / NAS</button>
+      <button class="cf-tab" onclick="showTab('smb',this)">SMB / NFS</button>
+    </div>
+
+    <!-- AWS S3 -->
+    <div class="cf-panel on" id="panel-s3">
+      <div class="cf-grid">
+        <div class="cf-field"><div class="cf-label">AWS Access Key ID</div><input class="cf-input" id="s3-key" placeholder="AKIAIOSFODNN7EXAMPLE"></div>
+        <div class="cf-field"><div class="cf-label">Secret Access Key</div><input class="cf-input" type="password" id="s3-secret" placeholder="••••••••••••••••••••"></div>
+        <div class="cf-field"><div class="cf-label">Region</div>
+          <select class="cf-select" id="s3-region">
+            <option>eu-west-1 (Ierland)</option><option>eu-central-1 (Frankfurt)</option>
+            <option>us-east-1 (N. Virginia)</option><option>us-west-2 (Oregon)</option>
+            <option>ap-southeast-1 (Singapore)</option>
+          </select>
+        </div>
+        <div class="cf-field"><div class="cf-label">Bucket naam</div><input class="cf-input" id="s3-bucket" placeholder="mijn-genomics-data"></div>
+        <div class="cf-field"><div class="cf-label">Prefix (map)</div><input class="cf-input" id="s3-prefix" placeholder="mycoscope/" value="mycoscope/"></div>
+        <div class="cf-field"><div class="cf-label">Storage class</div>
+          <select class="cf-select">
+            <option>STANDARD (actieve data)</option>
+            <option>STANDARD_IA (onregelmatig)</option>
+            <option>GLACIER (archief, goedkoop)</option>
+            <option>INTELLIGENT_TIERING (automatisch)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-teal" onclick="testConn('s3')">🔌 Verbinding testen</button>
+        <button class="btn btn-ghost" onclick="saveConn('s3')">💾 Opslaan in keychain</button>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--tx2);line-height:1.7;">
+        💡 Tip: gebruik een <strong style="color:var(--tx);">IAM-rol met minimale rechten</strong>: s3:GetObject, s3:PutObject, s3:ListBucket op je bucket.
+        Nooit root-credentials gebruiken.
+      </div>
+    </div>
+
+    <!-- Google Cloud -->
+    <div class="cf-panel" id="panel-gcs">
+      <div class="cf-grid">
+        <div class="cf-field" style="grid-column:1/-1;"><div class="cf-label">Service Account JSON</div>
+          <textarea class="cf-input" rows="4" style="resize:vertical;" placeholder='{"type":"service_account","project_id":"mijn-project","private_key_id":"...","private_key":"-----BEGIN RSA PRIVATE KEY-----\n..."}'></textarea>
+        </div>
+        <div class="cf-field"><div class="cf-label">Bucket naam</div><input class="cf-input" placeholder="mycoscope-genomics-eu"></div>
+        <div class="cf-field"><div class="cf-label">Regio</div>
+          <select class="cf-select">
+            <option>europe-west1 (België)</option><option>europe-west4 (Nederland)</option>
+            <option>us-central1 (Iowa)</option><option>asia-east1 (Taiwan)</option>
+          </select>
+        </div>
+        <div class="cf-field"><div class="cf-label">Storage class</div>
+          <select class="cf-select">
+            <option>STANDARD</option><option>NEARLINE (maandelijks)</option>
+            <option>COLDLINE (kwartaal)</option><option>ARCHIVE</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-teal" onclick="testConn('gcs')">🔌 Verbinding testen</button>
+        <button class="btn btn-ghost" onclick="saveConn('gcs')">💾 Opslaan</button>
+      </div>
+    </div>
+
+    <!-- Azure -->
+    <div class="cf-panel" id="panel-azure">
+      <div class="cf-grid">
+        <div class="cf-field"><div class="cf-label">Storage Account naam</div><input class="cf-input" placeholder="mycoscopegenomics"></div>
+        <div class="cf-field"><div class="cf-label">Account sleutel</div><input class="cf-input" type="password" placeholder="••••••••••••••••••••"></div>
+        <div class="cf-field"><div class="cf-label">Container naam</div><input class="cf-input" placeholder="genomics-data"></div>
+        <div class="cf-field"><div class="cf-label">Regio</div>
+          <select class="cf-select">
+            <option>westeurope (Nederland)</option><option>northeurope (Ierland)</option>
+            <option>germanywestcentral</option><option>eastus</option>
+          </select>
+        </div>
+        <div class="cf-field"><div class="cf-label">Access tier</div>
+          <select class="cf-select"><option>Hot</option><option>Cool</option><option>Archive</option></select>
+        </div>
+        <div class="cf-field"><div class="cf-label">Of gebruik SAS-URL</div>
+          <input class="cf-input" placeholder="https://account.blob.core.windows.net/container?sv=...">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-teal" onclick="testConn('azure')">🔌 Verbinding testen</button>
+        <button class="btn btn-ghost">💾 Opslaan</button>
+      </div>
+    </div>
+
+    <!-- Backblaze B2 -->
+    <div class="cf-panel" id="panel-b2">
+      <div style="background:rgba(232,160,32,.07);border:1px solid rgba(232,160,32,.2);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:var(--amber);">
+        💰 Backblaze B2 is ~6× goedkoper dan AWS S3. Ideaal voor archivering van grote FASTQ-bestanden. Download is €0.01/GB — S3 rekent €0.09/GB.
+      </div>
+      <div class="cf-grid">
+        <div class="cf-field"><div class="cf-label">Application Key ID</div><input class="cf-input" placeholder="001a2b3c4d5e6f..."></div>
+        <div class="cf-field"><div class="cf-label">Application Key</div><input class="cf-input" type="password" placeholder="••••••••••••••••••••"></div>
+        <div class="cf-field"><div class="cf-label">Bucket naam</div><input class="cf-input" placeholder="mycoscope-archive"></div>
+        <div class="cf-field"><div class="cf-label">Regio</div>
+          <select class="cf-select"><option>eu-central-003 (Amsterdam)</option><option>us-west-004</option></select>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-teal" onclick="testConn('b2')">🔌 Verbinding testen</button>
+        <button class="btn btn-ghost">💾 Opslaan</button>
+      </div>
+    </div>
+
+    <!-- WebDAV / NAS -->
+    <div class="cf-panel" id="panel-webdav">
+      <div class="cf-grid">
+        <div class="cf-field" style="grid-column:1/-1;"><div class="cf-label">WebDAV URL</div>
+          <input class="cf-input" placeholder="https://nas.mijnlab.ugent.be/dav/genomics/" value="https://synology.lab.local:5006/webdav/genomics/">
+        </div>
+        <div class="cf-field"><div class="cf-label">Gebruikersnaam</div><input class="cf-input" placeholder="genomics_user"></div>
+        <div class="cf-field"><div class="cf-label">Wachtwoord</div><input class="cf-input" type="password" placeholder="••••••••••••••••••••"></div>
+        <div class="cf-field"><div class="cf-label">NAS type</div>
+          <select class="cf-select">
+            <option>Synology DSM</option><option>QNAP QTS</option>
+            <option>Nextcloud</option><option>ownCloud</option><option>Generiek WebDAV</option>
+          </select>
+        </div>
+        <div class="cf-field"><div class="cf-label">SSL-verificatie</div>
+          <select class="cf-select"><option>Verifieer certificaat</option><option>Vertrouw zelf-ondertekend</option></select>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-teal" onclick="testConn('nas')">🔌 NAS verbinden</button>
+        <button class="btn btn-ghost">💾 Opslaan</button>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--tx2);line-height:1.7;">
+        💡 Synology: <strong style="color:var(--tx);">Configuratiescherm → Bestandsservices → WebDAV → Inschakelen</strong>.<br>
+        QNAP: <strong style="color:var(--tx);">Configuratiescherm → Applicaties → WebDAV Server</strong>.
+      </div>
+    </div>
+
+    <!-- SMB / NFS -->
+    <div class="cf-panel" id="panel-smb">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <!-- SMB -->
+        <div>
+          <div style="font-size:10px;font-family:var(--mono);color:var(--purple);letter-spacing:1.5px;margin-bottom:10px;text-transform:uppercase;">SMB / CIFS (Windows, Samba, NAS)</div>
+          <div class="cf-grid" style="gap:8px;">
+            <div class="cf-field" style="grid-column:1/-1;"><div class="cf-label">Server</div><input class="cf-input" placeholder="\\\\nas.lab.local\\genomics" value="\\\\synology.lab\\genomics"></div>
+            <div class="cf-field"><div class="cf-label">Gebruikersnaam</div><input class="cf-input" placeholder="lab\\genomics_user"></div>
+            <div class="cf-field"><div class="cf-label">Wachtwoord</div><input class="cf-input" type="password" placeholder="••••••••"></div>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:10px;font-size:11px;" onclick="testConn('smb')">🔌 SMB verbinden</button>
+        </div>
+        <!-- NFS -->
+        <div>
+          <div style="font-size:10px;font-family:var(--mono);color:var(--green);letter-spacing:1.5px;margin-bottom:10px;text-transform:uppercase;">NFS (Linux, macOS, HPC)</div>
+          <div class="cf-grid" style="gap:8px;">
+            <div class="cf-field" style="grid-column:1/-1;"><div class="cf-label">Mount punt</div><input class="cf-input" placeholder="nas.lab.local:/volume1/genomics" value="192.168.1.100:/genomics"></div>
+            <div class="cf-field"><div class="cf-label">NFS versie</div><select class="cf-select"><option>NFSv4 (aanbevolen)</option><option>NFSv3</option></select></div>
+            <div class="cf-field"><div class="cf-label">Lokale mountmap</div><input class="cf-input" placeholder="/mnt/genomics" value="/mnt/nas"></div>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:10px;font-size:11px;" onclick="testConn('nfs')">🔌 NFS mounten</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STORAGE BROWSER -->
+<section class="sec" style="background:var(--bg1);">
+<div class="container">
+  <div class="reveal">
+    <div class="sec-label" style="color:var(--green);">Bestandsbeheer</div>
+    <h2 class="sec-title">Genomics-bestanden <em style="color:var(--green);">beheren</em></h2>
+    <p class="sec-sub">Browse, upload en download direct vanuit MycoScope. Stel automatische sync in voor actieve projecten.</p>
+  </div>
+
+  <div class="browser reveal" style="transition-delay:.1s;">
+    <div class="browser-bar">
+      <select id="storageSelect" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;color:var(--tx1);font-family:var(--mono);font-size:11px;padding:5px 8px;outline:none;">
+        <option>🪣 AWS S3 — mycoscope-genomics/mycoscope/</option>
+        <option>🗂️ NAS — Synology/genomics/</option>
+        <option>☁️ GCS — mycoscope-eu/projects/</option>
+      </select>
+      <div class="browser-path" id="browserPath">s3://mycoscope-genomics/mycoscope/Af293_project/</div>
+      <button class="btn btn-ghost btn-sm" onclick="refresh()">↺</button>
+      <button class="btn btn-teal btn-sm" onclick="uploadFile()">↑ Upload</button>
+    </div>
+    <div class="browser-list" id="browserList"></div>
+  </div>
+
+  <!-- Transfer status -->
+  <div class="xfer-panel reveal" style="transition-delay:.2s;" id="xferPanel">
+    <div style="font-size:9px;font-family:var(--mono);color:var(--tx2);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Actieve transfers</div>
+    <div id="xferList"></div>
+  </div>
+
+  <!-- NAS Architecture diagram -->
+  <div class="nas-diagram reveal" style="transition-delay:.3s;margin-top:28px;">
+    <div class="nas-node">
+      <div class="nas-icon">💻</div>
+      <div class="nas-label">MycoScope</div>
+      <div class="nas-sub">desktop app<br>macOS / Windows / Linux</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:0 20px;">
+      <div class="nas-protocols">
+        <div class="nas-proto" style="color:var(--green);border-color:rgba(72,199,116,.3);background:rgba(72,199,116,.06);">WebDAV (HTTPS)</div>
+        <div class="nas-proto" style="color:var(--purple);border-color:rgba(123,104,238,.3);background:rgba(123,104,238,.06);">SMB / CIFS</div>
+        <div class="nas-proto" style="color:var(--teal);border-color:rgba(29,191,170,.3);background:rgba(29,191,170,.06);">NFS v4</div>
+        <div class="nas-proto" style="color:var(--aws);border-color:rgba(255,153,0,.3);background:rgba(255,153,0,.06);">S3 API</div>
+      </div>
+      <div style="font-size:8px;font-family:var(--mono);color:var(--tx2);">⟷ Lokaal netwerk<br>of internet</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="nas-node" style="border-color:rgba(72,199,116,.25);">
+        <div class="nas-icon">🗄️</div>
+        <div class="nas-label" style="color:var(--green);">NAS</div>
+        <div class="nas-sub">Synology / QNAP<br>50 TB+ opslag</div>
+      </div>
+      <div class="nas-node" style="border-color:rgba(255,153,0,.25);">
+        <div class="nas-icon">☁️</div>
+        <div class="nas-label" style="color:var(--aws);">Cloud</div>
+        <div class="nas-sub">AWS S3 / GCS / Azure<br>onbeperkte opslag</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer style="border-top:1px solid var(--bd);padding:28px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;position:relative;z-index:1;">
+  <div style="font-size:11px;font-family:var(--mono);color:var(--tx2);">MycoScope Opslag-integratie · AWS S3 · GCS · Azure · Backblaze B2 · WebDAV · SMB · NFS</div>
+  <div style="font-size:11px;color:var(--tx2);">🔒 Alle sleutels in OS keychain — nooit op MycoScope-servers</div>
+</footer>
+
+<script>
+// ─── Size visualization ──────────────────────────────────────
+const SIZES = [
+  { label:'MycoScope app', gb:0.035, pct:0.3, col:'#1DBFAA', note:'installer' },
+  { label:'Cursus (PWA)', gb:0.002, pct:0.1, col:'#7B68EE', note:'offline' },
+  { label:'UNITE database', gb:0.4, pct:3, col:'#378ADD', note:'ITS barcode' },
+  { label:'Pfam database', gb:2.1, pct:15, col:'#E8A020', note:'BGC detectie' },
+  { label:'1 Nanopore run', gb:5, pct:36, col:'#E05555', note:'30 Mb genoom, 50×' },
+  { label:'RNA-seq dataset', gb:12, pct:55, col:'#E86AC8', note:'6 samples × 2 GB' },
+  { label:'Pangenomics (50 stammen)', gb:40, pct:100, col:'#48C774', note:'volledig project' },
+];
+
+const viz = document.getElementById('sizeViz');
+SIZES.forEach((s,i) => {
+  viz.innerHTML += `
+  <div class="sv-bar">
+    <div class="sv-label">${s.label}</div>
+    <div class="sv-track">
+      <div class="sv-fill" style="width:0%;background:${s.col}22;border:1px solid ${s.col}40;color:${s.col};animation-delay:${i*120}ms;">
+        ${s.note}
+      </div>
+    </div>
+    <div class="sv-size" style="color:${s.col};">${s.gb >= 1 ? s.gb+'GB' : (s.gb*1000).toFixed(0)+'MB'}</div>
+  </div>`;
+});
+
+// Animate bars after load
+setTimeout(() => {
+  document.querySelectorAll('.sv-fill').forEach((el,i) => {
+    setTimeout(() => { el.style.width = SIZES[i].pct + '%'; }, i * 120);
+  });
+}, 400);
+
+// ─── Provider cards ─────────────────────────────────────────
+const PROVIDERS = [
+  { logo:'🪣', name:'AWS S3', type:'Public cloud', typeCol:'#FF9900',
+    price:'~€0.023', priceSub:'per GB/maand (eu-west-1)',
+    features:['Meest gebruikt in wetenschap','Glacier archief: €0.004/GB','Multipart upload voor grote bestanden','Lifecycle rules (auto naar Glacier)','KMS encryptie','GDPR: EU-regio beschikbaar'],
+    na:[], btnText:'S3 configureren', btnCol:'#FF9900', btnBg:'rgba(255,153,0,.1)' },
+  { logo:'☁️', name:'Google Cloud Storage', type:'Public cloud', typeCol:'#4285F4',
+    price:'~€0.020', priceSub:'per GB/maand (europe-west1)',
+    features:['Nauwe integratie met BigQuery','Archive: €0.0012/GB/maand','Consistente naamgeving (geen regio quirks)','Object versioning standaard','GDPR: België/Nederland datacenters'],
+    na:[], btnText:'GCS configureren', btnCol:'#4285F4', btnBg:'rgba(66,133,244,.1)' },
+  { logo:'🔷', name:'Azure Blob Storage', type:'Public cloud', typeCol:'#0078D4',
+    price:'~€0.018', priceSub:'per GB/maand (West Europe)',
+    features:['Ideaal bij Microsoft HPC-clusters','Archive tier: €0.002/GB','SAS-URL voor veilig delen','Azure AD integratie voor instituten','GDPR: datacenters in Amsterdam'],
+    na:[], btnText:'Azure configureren', btnCol:'#0078D4', btnBg:'rgba(0,120,212,.1)' },
+  { logo:'🔴', name:'Backblaze B2', type:'Budget cloud', typeCol:'#E05555',
+    price:'~€0.006', priceSub:'per GB/maand · 6× goedkoper dan S3',
+    features:['Beste prijs voor archief','S3-compatibele API (werkt direct)','Download: €0.01/GB vs €0.09 S3','Ideaal voor lange-termijn opslag','10 GB gratis voor altijd'],
+    na:['Minder datacenters','Geen lifecycle naar Glacier'], btnText:'B2 configureren', btnCol:'#E05555', btnBg:'rgba(224,85,85,.1)' },
+  { logo:'🗄️', name:'NAS (WebDAV)', type:'On-premise', typeCol:'#48C774',
+    price:'Eenmalig', priceSub:'hardware-investering, daarna gratis',
+    features:['Data blijft volledig intern','Synology / QNAP / Nextcloud','Geen datakosten na aanschaf','GDPR: data nooit het instituut uit','Snelle toegang op lokaal netwerk','Synology DSM API integratie'],
+    na:[], btnText:'NAS verbinden', btnCol:'#48C774', btnBg:'rgba(72,199,116,.1)' },
+  { logo:'🔗', name:'SMB / NFS', type:'On-premise', typeCol:'#7B68EE',
+    price:'Netwerk', priceSub:'gedeeld bestandssysteem',
+    features:['Direct mounten als schijf','HPC-cluster integratie (NFS)','Windows file shares (SMB)','Geen extra software nodig','Transparant voor MycoScope'],
+    na:['Alleen op lokaal netwerk'], btnText:'Mount configureren', btnCol:'#7B68EE', btnBg:'rgba(123,104,238,.1)' },
+];
+
+const grid = document.getElementById('provGrid');
+PROVIDERS.forEach(p => {
+  grid.innerHTML += `<div class="pcard">
+    <div class="pcard-top">
+      <div class="pcard-logo">${p.logo}</div>
+      <div class="pcard-name">${p.name}</div>
+      <span class="pcard-type" style="background:${p.btnBg};color:${p.typeCol};">${p.type}</span>
+    </div>
+    <div class="pcard-body">
+      <div class="pcard-price" style="color:${p.typeCol};">${p.price}</div>
+      <div class="pcard-price-sub">${p.priceSub}</div>
+      <ul class="pcard-features">
+        ${p.features.map(f=>`<li>${f}</li>`).join('')}
+        ${p.na.map(f=>`<li class="na">${f}</li>`).join('')}
+      </ul>
+      <button class="pcard-btn" style="background:${p.btnBg};color:${p.typeCol};border:1px solid ${p.typeCol}40;" onclick="document.getElementById('connect').scrollIntoView({behavior:'smooth'})">${p.btnText} →</button>
+    </div>
+  </div>`;
+});
+
+// ─── Tab switching ───────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.cf-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.cf-panel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('panel-'+id).classList.add('on');
+}
+
+// ─── Connection test simulation ──────────────────────────────
+async function testConn(type) {
+  const status = document.getElementById('connStatus');
+  status.textContent = '⟳ Verbinden...';
+  status.style.color = 'var(--amber)';
+  await sleep(1200);
+  status.textContent = '✓ Verbonden! Bucket toegankelijk.';
+  status.style.color = 'var(--green)';
+  setTimeout(() => { status.textContent = ''; }, 4000);
+}
+
+async function saveConn(type) {
+  const status = document.getElementById('connStatus');
+  status.textContent = '⟳ Opslaan in OS keychain...';
+  await sleep(600);
+  status.textContent = '✓ Opgeslagen in keychain';
+  status.style.color = 'var(--teal)';
+  setTimeout(() => { status.textContent = ''; }, 3000);
+}
+
+// ─── File browser ────────────────────────────────────────────
+const FILES = [
+  { icon:'📁', name:'Af293_project/', size:'—', date:'2026-03-22', type:'dir' },
+  { icon:'📁', name:'CRISPR_gliP_2024/', size:'—', date:'2026-03-20', type:'dir' },
+  { icon:'📄', name:'Af293_assembly_v2.fa.gz', size:'9.2 MB', date:'2026-03-22', type:'fasta', col:'#1DBFAA' },
+  { icon:'📄', name:'Af293_annotation.gff3', size:'4.1 MB', date:'2026-03-22', type:'gff3', col:'#7B68EE' },
+  { icon:'🧬', name:'wt_run1_dorado.fastq.gz', size:'4.8 GB', date:'2026-03-19', type:'fastq', col:'#E8A020' },
+  { icon:'🧬', name:'delta_gliP_run1.fastq.gz', size:'5.1 GB', date:'2026-03-21', type:'fastq', col:'#E05555' },
+  { icon:'📊', name:'rnaseq_wt_rep1.fastq.gz', size:'2.3 GB', date:'2026-03-15', type:'fastq', col:'#E8A020' },
+  { icon:'📊', name:'rnaseq_wt_rep2.fastq.gz', size:'2.1 GB', date:'2026-03-15', type:'fastq', col:'#E8A020' },
+  { icon:'📊', name:'rnaseq_mut_rep1.fastq.gz', size:'2.4 GB', date:'2026-03-16', type:'fastq', col:'#E05555' },
+  { icon:'📋', name:'grna_candidates.json', size:'24 KB', date:'2026-03-22', type:'json', col:'#48C774' },
+  { icon:'📋', name:'variants.vcf', size:'1.2 MB', date:'2026-03-22', type:'vcf', col:'#48C774' },
+  { icon:'📄', name:'methods.txt', size:'3.4 KB', date:'2026-03-22', type:'txt', col:'#9AA3B8' },
+];
+
+function renderBrowser() {
+  const list = document.getElementById('browserList');
+  list.innerHTML = FILES.map((f,i) => `
+    <div class="browser-row" onclick="selectFile(${i})">
+      <div class="br-icon">${f.icon}</div>
+      <div class="br-name" style="color:${f.col||'var(--tx1)'};">${f.name}</div>
+      <div class="br-size">${f.size}</div>
+      <div class="br-date">${f.date}</div>
+      <div class="br-action">
+        ${f.type!=='dir'?`<div class="bra" style="color:var(--teal);border-color:rgba(29,191,170,.25);" onclick="event.stopPropagation();openInApp('${f.name}')">Openen</div>`:``}
+        <div class="bra" style="color:var(--tx2);border-color:var(--bd);" onclick="event.stopPropagation();downloadFile('${f.name}')">↓</div>
+      </div>
+    </div>`).join('');
+}
+
+function selectFile(i) { document.querySelectorAll('.browser-row').forEach((r,j)=>r.classList.toggle('sel',j===i)); }
+function openInApp(name) { alert(`"${name}" wordt geladen in MycoScope — beschikbaar als het genoom is gedownload`); }
+function downloadFile(name) { startTransfer(name, 'down'); }
+function uploadFile() { alert('Bestandskiezer openen (demo)'); }
+function refresh() { renderBrowser(); }
+
+// ─── Transfer simulation ─────────────────────────────────────
+const XFERS = [
+  { name:'wt_run1_dorado.fastq.gz', dir:'↓', size:'4.8 GB', pct:78, col:'#E8A020' },
+  { name:'Af293_assembly_v2.fa.gz', dir:'↓', size:'9.2 MB', pct:100, col:'#1DBFAA' },
+  { name:'variants.vcf', dir:'↑', size:'1.2 MB', pct:45, col:'#48C774' },
+];
+
+function renderXfers() {
+  document.getElementById('xferList').innerHTML = XFERS.map(x => `
+    <div class="xfer-item">
+      <div class="xfer-icon">${x.dir==='↓'?'⬇️':'⬆️'}</div>
+      <div class="xfer-name">${x.name}</div>
+      <div class="xfer-bar-wrap"><div class="xfer-bar" style="width:${x.pct}%;background:${x.col};"></div></div>
+      <div class="xfer-size">${x.size}</div>
+      <div class="xfer-status" style="color:${x.pct===100?'var(--green)':'var(--amber)'};">${x.pct===100?'✓ Klaar':x.pct+'%'}</div>
+    </div>`).join('');
+}
+
+function startTransfer(name, dir) {
+  const file = FILES.find(f=>f.name===name);
+  if(!file) return;
+  XFERS.unshift({ name, dir: dir==='down'?'↓':'↑', size: file.size, pct:0, col:'#1DBFAA' });
+  renderXfers();
+  let pct = 0;
+  const iv = setInterval(() => {
+    pct = Math.min(100, pct + Math.random()*15);
+    XFERS[0].pct = Math.round(pct);
+    renderXfers();
+    if(pct>=100) clearInterval(iv);
+  }, 300);
+}
+
+// ─── Init ───────────────────────────────────────────────────
+function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
+const obs = new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+renderBrowser();
+renderXfers();
+</script>
+</body>
+</html>
