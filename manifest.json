@@ -2,7 +2,7 @@
   "name": "MycoScope Cursus",
   "short_name": "MycoScope",
   "description": "Complete genomics-cursus voor schimmels en planten",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#05080F",
   "theme_color": "#1DBFAA",

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MycoScope Cursus — Waarom dit alles ertoe doet</title>
+<title>MycoScope — Waarom dit alles ertoe doet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
@@ -21,6 +21,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--tx);font-family:var(--sans);overflow-x:hidden;}
+
+/* ─── LANG TOGGLE ─── */
+.lang-toggle{position:fixed;top:14px;right:16px;z-index:500;display:flex;gap:2px;background:rgba(5,8,16,.85);border:1px solid var(--bd2);border-radius:7px;padding:3px;backdrop-filter:blur(12px);}
+.lang-btn{padding:4px 10px;border-radius:5px;border:none;background:none;cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--tx2);transition:all .15s;}
+.lang-btn.active{background:var(--bg4);color:var(--tx);}
 
 /* ─── WHY HERO (fullscreen, cinematic) ─── */
 .why-hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;position:relative;overflow:hidden;}
@@ -124,38 +129,44 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
 </head>
 <body>
 
+<!-- Lang toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn" id="btnNL" onclick="setLang('nl')">NL</button>
+  <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+</div>
+
 <!-- ══ WHY HERO ══ -->
 <section class="why-hero">
   <div class="star-field" id="stars"></div>
   <div class="why-glow"></div>
 
-  <div class="why-label">De cursus · Simon Sinek's Golden Circle</div>
+  <div class="why-label" data-i18n="why_label">De cursus · Simon Sinek's Golden Circle</div>
 
-  <h1 class="why-title">Niet <em>wat</em> we doen.<br>Niet <em>hoe</em> we het doen.<br>Maar <em>waarom</em> het ertoe doet.</h1>
+  <h1 class="why-title" data-i18n="why_title">Niet <em>wat</em> we doen.<br>Niet <em>hoe</em> we het doen.<br>Maar <em>waarom</em> het ertoe doet.</h1>
 
-  <p class="why-sub">Elk antibioticum dat je ooit nam, redde ooit iemands leven dankzij een schimmel. Elke therapie die vandaag kankercellen bestrijdt, begon met iemand die een genoom las. Dit is die vaardigheid.</p>
+  <p class="why-sub" data-i18n="why_sub">Elk antibioticum dat je ooit nam, redde ooit iemands leven dankzij een schimmel. Elke therapie die vandaag kankercellen bestrijdt, begon met iemand die een genoom las. Dit is die vaardigheid.</p>
 
   <!-- Golden Circle visual -->
   <div class="gc-visual">
     <div class="gc-rings">
       <div class="gc-ring gc-why">
-        <div class="gc-label gc-label-why">WAAROM</div>
+        <div class="gc-label gc-label-why" data-i18n="gc_why">WAAROM</div>
       </div>
       <div class="gc-ring gc-how">
-        <div class="gc-label gc-label-how">HOE</div>
+        <div class="gc-label gc-label-how" data-i18n="gc_how">HOE</div>
       </div>
       <div class="gc-ring gc-what">
-        <div class="gc-label-what">WAT</div>
+        <div class="gc-label-what" data-i18n="gc_what">WAT</div>
       </div>
     </div>
-    <div style="text-align:center;margin-top:16px;font-size:11px;font-family:var(--mono);color:var(--tx2);line-height:1.7;">
+    <div style="text-align:center;margin-top:16px;font-size:11px;font-family:var(--mono);color:var(--tx2);line-height:1.7;" data-i18n="gc_caption">
       Meeste cursussen beginnen bij WAT (tools, code, syntax).<br>
       Wij beginnen bij WAAROM — de reden dat het de moeite waard is.
     </div>
   </div>
 
   <div class="why-scroll">
-    <span>Begin het verhaal</span>
+    <span data-i18n="scroll_label">Begin het verhaal</span>
     <span class="why-scroll-arr">↓</span>
   </div>
 </section>
@@ -166,10 +177,10 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
   <div class="reveal">
     <div class="section-circle">
       <div class="sc-ring" style="background:rgba(200,150,10,.15);border:2px solid rgba(200,150,10,.4);color:var(--gold2);">W</div>
-      <span class="sc-label" style="color:var(--gold2);">Waarom · Purpose · Cause · Belief</span>
+      <span class="sc-label" style="color:var(--gold2);" data-i18n="why_circle_label">Waarom · Purpose · Cause · Belief</span>
     </div>
-    <h2 class="section-title">Elk leven dat ik ken,<br>werd <em style="color:var(--gold2);">gered door een schimmel.</em></h2>
-    <p class="section-body">
+    <h2 class="section-title" data-i18n="why_section_title">Elk leven dat ik ken,<br>werd <em style="color:var(--gold2);">gered door een schimmel.</em></h2>
+    <p class="section-body" data-i18n="why_section_body">
       Je weet het waarschijnlijk niet, maar elke keer dat je antibiotica slikte, hielp een schimmel je overleven. Elke orgaantransplantatie die werkte, lukte dankzij cyclosporine — uit een bodemschimmel geïsoleerd in Noorwegen in 1969.
       <br><br>
       <strong>97% van alle schimmelsoorten is nooit beschreven.</strong> Dat zijn miljoenen soorten die we niet kennen, niet begrijpen, nooit bestudeerd hebben. Elke onbekende soort is een bibliotheek vol chemische verbindingen die we nog nooit gelezen hebben.
@@ -181,22 +192,22 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
   <!-- Story cards -->
   <div class="story-grid reveal" style="transition-delay:.1s;">
     <div class="story-card">
-      <div class="sc-year">1928 · Londen</div>
-      <div class="sc-title">Het beschimmelde petrischaaltje dat de wereld veranderde</div>
-      <div class="sc-body">Alexander Fleming vergat zijn laboratorium op te ruimen voor zijn vakantie. Toen hij terugkwam, had <em>Penicillium notatum</em> zijn bacteriën gekaapt. De schimmel had een chemisch wapen geperfectioneerd over miljarden jaren evolutie. Fleming zag het. De rest is geschiedenis.</div>
-      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--gold2);"></div><span style="color:var(--gold2);">~200.000 levens gered in WOII. Miljoenen sindsdien.</span></div>
+      <div class="sc-year" data-i18n="card1_year">1928 · Londen</div>
+      <div class="sc-title" data-i18n="card1_title">Het beschimmelde petrischaaltje dat de wereld veranderde</div>
+      <div class="sc-body" data-i18n="card1_body">Alexander Fleming vergat zijn laboratorium op te ruimen voor zijn vakantie. Toen hij terugkwam, had <em>Penicillium notatum</em> zijn bacteriën gekaapt. De schimmel had een chemisch wapen geperfectioneerd over miljarden jaren evolutie. Fleming zag het. De rest is geschiedenis.</div>
+      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--gold2);"></div><span style="color:var(--gold2);" data-i18n="card1_impact">~200.000 levens gered in WOII. Miljoenen sindsdien.</span></div>
     </div>
     <div class="story-card">
-      <div class="sc-year">1969 · Noorwegen</div>
-      <div class="sc-title">De bodemschimmel die orgaantransplantaties mogelijk maakte</div>
-      <div class="sc-body">Sandoz-onderzoekers namen bodemmonsters mee van een vakantie in Noorwegen. Eén monster bevatte <em>Tolypocladium inflatum</em> — een schimmel die cyclosporine maakt. Zonder dit immunosuppressivum zouden alle getransplanteerde harten en nieren zijn afgestoten.</div>
-      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--teal);"></div><span style="color:var(--teal);">Elk jaar 140.000+ orgaantransplantaties mogelijk gemaakt.</span></div>
+      <div class="sc-year">1969 · Norge</div>
+      <div class="sc-title" data-i18n="card2_title">De bodemschimmel die orgaantransplantaties mogelijk maakte</div>
+      <div class="sc-body" data-i18n="card2_body">Sandoz-onderzoekers namen bodemmonsters mee van een vakantie in Noorwegen. Eén monster bevatte <em>Tolypocladium inflatum</em> — een schimmel die cyclosporine maakt. Zonder dit immunosuppressivum zouden alle getransplanteerde harten en nieren zijn afgestoten.</div>
+      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--teal);"></div><span style="color:var(--teal);" data-i18n="card2_impact">Elk jaar 140.000+ orgaantransplantaties mogelijk gemaakt.</span></div>
     </div>
     <div class="story-card">
-      <div class="sc-year">Nu · Jouw bureau</div>
-      <div class="sc-title">De ontdekking die jij kunt maken</div>
-      <div class="sc-body">Een MinION past in je zak. Een gram bodem bevat honderden schimmelsoorten. Met MycoScope en de kennis uit deze cursus kun je hun genomen lezen, hun biosynthese-clusters vinden, hun chemie begrijpen — en misschien de volgende levensreddende verbinding identificeren.</div>
-      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--purple);"></div><span style="color:var(--purple);">97% van alle schimmelsoorten: nog niet beschreven.</span></div>
+      <div class="sc-year" data-i18n="card3_year">Nu · Jouw bureau</div>
+      <div class="sc-title" data-i18n="card3_title">De ontdekking die jij kunt maken</div>
+      <div class="sc-body" data-i18n="card3_body">Een MinION past in je zak. Een gram bodem bevat honderden schimmelsoorten. Met MycoScope en de kennis uit deze cursus kun je hun genomen lezen, hun biosynthese-clusters vinden, hun chemie begrijpen — en misschien de volgende levensreddende verbinding identificeren.</div>
+      <div class="sc-impact"><div class="sc-impact-dot" style="background:var(--purple);"></div><span style="color:var(--purple);" data-i18n="card3_impact">97% van alle schimmelsoorten: nog niet beschreven.</span></div>
     </div>
   </div>
 </div>
@@ -206,7 +217,7 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
 
 <!-- PULLQUOTE 1 -->
 <div class="pullquote reveal">
-  <p class="pq-text">Mensen kopen niet wat je doet. Ze kopen waarom je het doet.</p>
+  <p class="pq-text" data-i18n="pq1_text">Mensen kopen niet wat je doet. Ze kopen waarom je het doet.</p>
   <div class="pq-attr">— Simon Sinek · Start With Why, 2009</div>
 </div>
 
@@ -218,32 +229,32 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
   <div class="reveal">
     <div class="section-circle">
       <div class="sc-ring" style="background:rgba(200,150,10,.15);border:2px solid rgba(200,150,10,.4);color:var(--gold2);">W</div>
-      <span class="sc-label" style="color:var(--gold2);">Waarom jij · Persoonlijke impact</span>
+      <span class="sc-label" style="color:var(--gold2);" data-i18n="whyyou_circle_label">Waarom jij · Persoonlijke impact</span>
     </div>
-    <h2 class="section-title">Wat jij ermee <em style="color:var(--gold2);">kunt doen</em></h2>
-    <p class="section-body">Bioinformatica is niet meer een specialisme voor computerwetenschappers. Het is een basisvaardigheid geworden — zoals statistiek of lab-technieken. De tools zijn nu zo toegankelijk dat elke bioloog, schimmelonderzoeker, of veldecolog ze kan gebruiken.</p>
+    <h2 class="section-title" data-i18n="whyyou_title">Wat jij ermee <em style="color:var(--gold2);">kunt doen</em></h2>
+    <p class="section-body" data-i18n="whyyou_body">Bioinformatica is niet meer een specialisme voor computerwetenschappers. Het is een basisvaardigheid geworden — zoals statistiek of lab-technieken. De tools zijn nu zo toegankelijk dat elke bioloog, schimmelonderzoeker, of veldecolog ze kan gebruiken.</p>
   </div>
 
   <div class="why-you-grid reveal" style="transition-delay:.1s;">
     <div class="wy-item">
       <div class="wy-icon">🦠</div>
-      <div class="wy-title">Als je met schimmels of planten werkt</div>
-      <div class="wy-body">Jij hebt nu directe toegang tot de complete genetische blauwdruk van je organisme. Welk gen is verantwoordelijk voor virulentie? Welke biosynthese-clusters zijn actief? Hoe verhoudt jouw stam zich tot andere? Vragen die vroeger weken of maanden kostten, beantwoord je nu in uren.</div>
+      <div class="wy-title" data-i18n="wy1_title">Als je met schimmels of planten werkt</div>
+      <div class="wy-body" data-i18n="wy1_body">Jij hebt nu directe toegang tot de complete genetische blauwdruk van je organisme. Welk gen is verantwoordelijk voor virulentie? Welke biosynthese-clusters zijn actief? Hoe verhoudt jouw stam zich tot andere? Vragen die vroeger weken of maanden kostten, beantwoord je nu in uren.</div>
     </div>
     <div class="wy-item">
       <div class="wy-icon">🏥</div>
-      <div class="wy-title">Als je in medisch onderzoek werkt</div>
-      <div class="wy-body">Invasieve aspergillose doodt 50% van de patiënten. Antibioticaresistentie doodt 1,3 miljoen mensen per jaar. CRISPR-gebaseerde diagnostiek en behandelingen zijn in opkomst. De kennis in deze cursus is direct relevant voor het zoeken naar nieuwe targets en behandelingen.</div>
+      <div class="wy-title" data-i18n="wy2_title">Als je in medisch onderzoek werkt</div>
+      <div class="wy-body" data-i18n="wy2_body">Invasieve aspergillose doodt 50% van de patiënten. Antibioticaresistentie doodt 1,3 miljoen mensen per jaar. CRISPR-gebaseerde diagnostiek en behandelingen zijn in opkomst. De kennis in deze cursus is direct relevant voor het zoeken naar nieuwe targets en behandelingen.</div>
     </div>
     <div class="wy-item">
       <div class="wy-icon">🌍</div>
-      <div class="wy-title">Als je in ecologie of landbouw werkt</div>
-      <div class="wy-body">90% van landplanten leeft in symbiose met schimmels. Schimmelziekten vernietigen 20-30% van alle gewasopbrengsten. ITS-barcode metagenomics kan de complete mycobioom van een bodemmonster in kaart brengen — van één gram grond tot de complete schimmelbiodiversiteit van een ecosysteem.</div>
+      <div class="wy-title" data-i18n="wy3_title">Als je in ecologie of landbouw werkt</div>
+      <div class="wy-body" data-i18n="wy3_body">90% van landplanten leeft in symbiose met schimmels. Schimmelziekten vernietigen 20-30% van alle gewasopbrengsten. ITS-barcode metagenomics kan de complete mycobioom van een bodemmonster in kaart brengen — van één gram grond tot de complete schimmelbiodiversiteit van een ecosysteem.</div>
     </div>
     <div class="wy-item">
       <div class="wy-icon">🎓</div>
-      <div class="wy-title">Als je student of docent bent</div>
-      <div class="wy-body">Deze cursus bereidt je voor op Coursera-specialisaties (Bioinformatics Specialization UC San Diego, Genomic Data Science JHU) en op echte wetenschappelijke projecten. Na deze cursus spreek je de taal van genomics — en kun je de tools begrijpen die de biologische revolutie van deze eeuw aandrijven.</div>
+      <div class="wy-title" data-i18n="wy4_title">Als je student of docent bent</div>
+      <div class="wy-body" data-i18n="wy4_body">Deze cursus bereidt je voor op Coursera-specialisaties (Bioinformatics Specialization UC San Diego, Genomic Data Science JHU) en op echte wetenschappelijke projecten. Na deze cursus spreek je de taal van genomics — en kun je de tools begrijpen die de biologische revolutie van deze eeuw aandrijven.</div>
     </div>
   </div>
 </div>
@@ -251,8 +262,8 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
 
 <!-- PULLQUOTE 2 -->
 <div class="pullquote reveal" style="background:var(--bg1);">
-  <p class="pq-text">De vraag is niet of we de gereedschappen hebben om het genoom te lezen. De vraag is of we de moed hebben om de consequenties van de antwoorden te dragen.</p>
-  <div class="pq-attr">— Francis Collins · directeur NIH, 2003 (bij voltooiing Humaan Genoomproject)</div>
+  <p class="pq-text" data-i18n="pq2_text">De vraag is niet of we de gereedschappen hebben om het genoom te lezen. De vraag is of we de moed hebben om de consequenties van de antwoorden te dragen.</p>
+  <div class="pq-attr">— Francis Collins · directeur NIH, 2003</div>
 </div>
 
 <!-- ══ HOW: HET PROCES ══ -->
@@ -261,50 +272,50 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
   <div class="reveal">
     <div class="section-circle">
       <div class="sc-ring" style="background:rgba(29,191,170,.12);border:2px solid rgba(29,191,170,.3);color:var(--teal);">H</div>
-      <span class="sc-label" style="color:var(--teal);">Hoe · Process · Method</span>
+      <span class="sc-label" style="color:var(--teal);" data-i18n="how_circle_label">Hoe · Process · Method</span>
     </div>
-    <h2 class="section-title">Van DNA tot <em style="color:var(--teal);">betekenis</em></h2>
-    <p class="section-body">Genomics is geen magie. Het is een reeks stappen — elk begrijpelijk, elk met een duidelijke reden. Dit is het proces dat je leert beheersen.</p>
+    <h2 class="section-title" data-i18n="how_title">Van DNA tot <em style="color:var(--teal);">betekenis</em></h2>
+    <p class="section-body" data-i18n="how_body">Genomics is geen magie. Het is een reeks stappen — elk begrijpelijk, elk met een duidelijke reden. Dit is het proces dat je leert beheersen.</p>
   </div>
 
   <div class="how-steps reveal" style="transition-delay:.1s;">
     <div class="how-step">
       <div class="how-num" style="background:rgba(200,150,10,.1);border:1px solid rgba(200,150,10,.25);color:var(--gold2);">1</div>
       <div>
-        <div class="how-title">DNA isoleren en sequencen</div>
-        <div class="how-body">Het begint in het lab: DNA uit een cel extraheren, amplificeren waar nodig, en door een sequencing-machine sturen. Illumina leest korte stukjes snel en goedkoop. Nanopore leest lange stukjes in real-time, past in je zak, en kost &lt;$1000 voor het apparaat zelf.</div>
+        <div class="how-title" data-i18n="how1_title">DNA isoleren en sequencen</div>
+        <div class="how-body" data-i18n="how1_body">Het begint in het lab: DNA uit een cel extraheren, amplificeren waar nodig, en door een sequencing-machine sturen. Illumina leest korte stukjes snel en goedkoop. Nanopore leest lange stukjes in real-time, past in je zak, en kost &lt;$1000 voor het apparaat zelf.</div>
         <div class="how-tools"><span class="how-tool">MinION</span><span class="how-tool">Illumina MiSeq</span><span class="how-tool">Nanopore R10.4</span></div>
       </div>
     </div>
     <div class="how-step">
       <div class="how-num" style="background:rgba(29,191,170,.08);border:1px solid rgba(29,191,170,.2);color:var(--teal);">2</div>
       <div>
-        <div class="how-title">Kwaliteitscontrole en assembly</div>
-        <div class="how-body">Ruwe reads zijn imperfect. Kwaliteitsfiltering verwijdert slechte reads. Assembly plakt overlappende reads samen tot chromosomen — zoals een puzzel zonder voorbeeldplaatje. Het resultaat: de volledige DNA-sequentie van het organisme, scaffold voor scaffold.</div>
+        <div class="how-title" data-i18n="how2_title">Kwaliteitscontrole en assembly</div>
+        <div class="how-body" data-i18n="how2_body">Ruwe reads zijn imperfect. Kwaliteitsfiltering verwijdert slechte reads. Assembly plakt overlappende reads samen tot chromosomen — zoals een puzzel zonder voorbeeldplaatje. Het resultaat: de volledige DNA-sequentie van het organisme, scaffold voor scaffold.</div>
         <div class="how-tools"><span class="how-tool">Dorado (basecalling)</span><span class="how-tool">NanoFilt</span><span class="how-tool">Flye (assembly)</span><span class="how-tool">BUSCO (QC)</span></div>
       </div>
     </div>
     <div class="how-step">
       <div class="how-num" style="background:rgba(123,104,238,.08);border:1px solid rgba(123,104,238,.2);color:var(--purple);">3</div>
       <div>
-        <div class="how-title">Genen annoteren en vergelijken</div>
-        <div class="how-body">Een ruwe DNA-sequentie is als een boek zonder spaties of leestekens. Annotatie voegt structuur toe: het identificeert genen, exonen, introns, promotoren. Vergelijkende genomics toont welke genen geconserveerd zijn over soorten heen — en welke uniek zijn voor jouw organisme.</div>
+        <div class="how-title" data-i18n="how3_title">Genen annoteren en vergelijken</div>
+        <div class="how-body" data-i18n="how3_body">Een ruwe DNA-sequentie is als een boek zonder spaties of leestekens. Annotatie voegt structuur toe: het identificeert genen, exonen, introns, promotoren. Vergelijkende genomics toont welke genen geconserveerd zijn over soorten heen — en welke uniek zijn voor jouw organisme.</div>
         <div class="how-tools"><span class="how-tool">AUGUSTUS</span><span class="how-tool">Funannotate</span><span class="how-tool">FungiDB</span><span class="how-tool">antiSMASH</span></div>
       </div>
     </div>
     <div class="how-step">
       <div class="how-num" style="background:rgba(224,85,85,.08);border:1px solid rgba(224,85,85,.2);color:var(--red);">4</div>
       <div>
-        <div class="how-title">Experimenteel interveniëren</div>
-        <div class="how-body">CRISPR-Cas9 maakt het mogelijk om specifieke genen uit te schakelen of te wijzigen. Je ontwerpt een 20-nucleotide guide RNA, transformeert het organisme, en valideert het resultaat met sequencing. De complete cirkel: ontdekking → hypothese → experiment → bevestiging.</div>
+        <div class="how-title" data-i18n="how4_title">Experimenteel interveniëren</div>
+        <div class="how-body" data-i18n="how4_body">CRISPR-Cas9 maakt het mogelijk om specifieke genen uit te schakelen of te wijzigen. Je ontwerpt een 20-nucleotide guide RNA, transformeert het organisme, en valideert het resultaat met sequencing. De complete cirkel: ontdekking → hypothese → experiment → bevestiging.</div>
         <div class="how-tools"><span class="how-tool">SpCas9 (NGG PAM)</span><span class="how-tool">CFD scoring</span><span class="how-tool">Minimap2 + bcftools</span></div>
       </div>
     </div>
     <div class="how-step">
       <div class="how-num" style="background:rgba(39,174,96,.08);border:1px solid rgba(39,174,96,.2);color:var(--green);">5</div>
       <div>
-        <div class="how-title">Publiceren en delen</div>
-        <div class="how-body">Wetenschap bestaat pas als het gedeeld wordt. Data deponeren in NCBI, methoden documenteren, figuren maken die het verhaal vertellen. MycoScope genereert de methoden-paragraaf, figuren en supplementary-tabellen automatisch — klaar voor indiening bij Nature, mBio, of PLOS.</div>
+        <div class="how-title" data-i18n="how5_title">Publiceren en delen</div>
+        <div class="how-body" data-i18n="how5_body">Wetenschap bestaat pas als het gedeeld wordt. Data deponeren in NCBI, methoden documenteren, figuren maken die het verhaal vertellen. MycoScope genereert de methoden-paragraaf, figuren en supplementary-tabellen automatisch — klaar voor indiening bij Nature, mBio, of PLOS.</div>
         <div class="how-tools"><span class="how-tool">NCBI GenBank</span><span class="how-tool">FAIR data</span><span class="how-tool">Snakemake / Nextflow</span></div>
       </div>
     </div>
@@ -318,52 +329,52 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
   <div class="reveal">
     <div class="section-circle">
       <div class="sc-ring" style="background:rgba(123,104,238,.1);border:2px solid rgba(123,104,238,.28);color:var(--purple);">W</div>
-      <span class="sc-label" style="color:var(--purple);">Wat · The course · 5 eenheden · ~5 uur</span>
+      <span class="sc-label" style="color:var(--purple);" data-i18n="what_circle_label">Wat · The course · 5 eenheden · ~5 uur</span>
     </div>
-    <h2 class="section-title">De <em style="color:var(--purple);">vijf eenheden</em></h2>
-    <p class="section-body">Nu je weet waarom het ertoe doet en hoe het proces werkt, is dit wat je concreet leert. Elke eenheid bouwt voort op de vorige. Je hoeft niets vooraf te weten.</p>
+    <h2 class="section-title" data-i18n="what_title">De <em style="color:var(--purple);">vijf eenheden</em></h2>
+    <p class="section-body" data-i18n="what_body">Nu je weet waarom het ertoe doet en hoe het proces werkt, is dit wat je concreet leert. Elke eenheid bouwt voort op de vorige. Je hoeft niets vooraf te weten.</p>
   </div>
 
   <div class="unit-cards reveal" style="transition-delay:.1s;">
     <div class="unit-card">
       <div class="uc-icon">🧬</div>
-      <div class="uc-num">Eenheid 1</div>
-      <div class="uc-title">DNA & Moleculaire Basis</div>
-      <div class="uc-lessons">5 lessen · ~84 min</div>
-      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">Van het ontdekken van de dubbelhelix tot het centrale dogma. Genen, chromosomen, GC-gehalte.</div>
-      <span class="uc-tag" style="background:rgba(29,191,170,.1);color:var(--teal);">Geen voorkennis nodig</span>
+      <div class="uc-num" data-i18n="u1_num">Eenheid 1</div>
+      <div class="uc-title" data-i18n="u1_title">DNA & Moleculaire Basis</div>
+      <div class="uc-lessons" data-i18n="u1_meta">5 lessen · ~84 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;" data-i18n="u1_body">Van het ontdekken van de dubbelhelix tot het centrale dogma. Genen, chromosomen, GC-gehalte.</div>
+      <span class="uc-tag" style="background:rgba(29,191,170,.1);color:var(--teal);" data-i18n="u1_tag">Geen voorkennis nodig</span>
     </div>
     <div class="unit-card">
       <div class="uc-icon">🔬</div>
-      <div class="uc-num">Eenheid 2</div>
-      <div class="uc-title">Sequencing & Data</div>
-      <div class="uc-lessons">5 lessen · ~82 min</div>
-      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">FASTQ-formaat, kwaliteitsscores, assembly-statistieken (N50, BUSCO), de MinION-pipeline.</div>
-      <span class="uc-tag" style="background:rgba(123,104,238,.1);color:var(--purple);">Praktisch</span>
+      <div class="uc-num" data-i18n="u2_num">Eenheid 2</div>
+      <div class="uc-title" data-i18n="u2_title">Sequencing & Data</div>
+      <div class="uc-lessons" data-i18n="u2_meta">5 lessen · ~82 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;" data-i18n="u2_body">FASTQ-formaat, kwaliteitsscores, assembly-statistieken (N50, BUSCO), de MinION-pipeline.</div>
+      <span class="uc-tag" style="background:rgba(123,104,238,.1);color:var(--purple);" data-i18n="u2_tag">Praktisch</span>
     </div>
     <div class="unit-card">
       <div class="uc-icon">✂️</div>
-      <div class="uc-num">Eenheid 3</div>
-      <div class="uc-title">CRISPR & Editering</div>
-      <div class="uc-lessons">5 lessen · ~84 min</div>
-      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">Cas9, PAM-sequenties, gRNA-ontwerp, off-target analyse, base editing, prime editing.</div>
-      <span class="uc-tag" style="background:rgba(224,85,85,.1);color:var(--red);">Nobelprijs 2020</span>
+      <div class="uc-num" data-i18n="u3_num">Eenheid 3</div>
+      <div class="uc-title" data-i18n="u3_title">CRISPR & Editering</div>
+      <div class="uc-lessons" data-i18n="u3_meta">5 lessen · ~84 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;" data-i18n="u3_body">Cas9, PAM-sequenties, gRNA-ontwerp, off-target analyse, base editing, prime editing.</div>
+      <span class="uc-tag" style="background:rgba(224,85,85,.1);color:var(--red);" data-i18n="u3_tag">Nobelprijs 2020</span>
     </div>
     <div class="unit-card">
       <div class="uc-icon">🌳</div>
-      <div class="uc-num">Eenheid 4</div>
-      <div class="uc-title">Vergelijkende Genomics</div>
-      <div class="uc-lessons">3 lessen · ~48 min</div>
-      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">Fylogenie, ITS-barcode, UNITE-database, biosynthese-clusters, secundaire metabolieten.</div>
-      <span class="uc-tag" style="background:rgba(72,199,116,.1);color:var(--green);">Schimmelfocus</span>
+      <div class="uc-num" data-i18n="u4_num">Eenheid 4</div>
+      <div class="uc-title" data-i18n="u4_title">Vergelijkende Genomics</div>
+      <div class="uc-lessons" data-i18n="u4_meta">3 lessen · ~48 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;" data-i18n="u4_body">Fylogenie, ITS-barcode, UNITE-database, biosynthese-clusters, secundaire metabolieten.</div>
+      <span class="uc-tag" style="background:rgba(72,199,116,.1);color:var(--green);" data-i18n="u4_tag">Schimmelfocus</span>
     </div>
     <div class="unit-card">
       <div class="uc-icon">📊</div>
-      <div class="uc-num">Eenheid 5</div>
-      <div class="uc-title">Data-analyse & Publicatie</div>
-      <div class="uc-lessons">5 lessen · ~76 min</div>
-      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;">RNA-seq, differentiële expressie, statistiek, FAIR-data, reproduceerbare analyse, publiceren.</div>
-      <span class="uc-tag" style="background:rgba(200,150,10,.1);color:var(--gold2);">→ Coursera-ready</span>
+      <div class="uc-num" data-i18n="u5_num">Eenheid 5</div>
+      <div class="uc-title" data-i18n="u5_title">Data-analyse & Publicatie</div>
+      <div class="uc-lessons" data-i18n="u5_meta">5 lessen · ~76 min</div>
+      <div class="uc-body" style="font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;" data-i18n="u5_body">RNA-seq, differentiële expressie, statistiek, FAIR-data, reproduceerbare analyse, publiceren.</div>
+      <span class="uc-tag" style="background:rgba(200,150,10,.1);color:var(--gold2);" data-i18n="u5_tag">→ Coursera-ready</span>
     </div>
   </div>
 
@@ -372,11 +383,11 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
     <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
       <div style="font-size:40px;">🎓</div>
       <div style="flex:1;">
-        <div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:8px;">Na deze cursus: aanbevolen vervolgpaden</div>
+        <div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:8px;" data-i18n="coursera_label">Na deze cursus: aanbevolen vervolgpaden</div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
           <a href="https://www.coursera.org/specializations/bioinformatics" target="_blank" style="padding:10px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--bd)'">
             <div style="font-size:12px;font-weight:500;color:var(--tx);">Bioinformatics Specialization</div>
-            <div style="font-size:10px;font-family:var(--mono);color:var(--teal);margin-top:3px;">UC San Diego · Pevzner & Compeau · 7 cursussen</div>
+            <div style="font-size:10px;font-family:var(--mono);color:var(--teal);margin-top:3px;">UC San Diego · Pevzner &amp; Compeau · 7 cursussen</div>
           </a>
           <a href="https://www.coursera.org/specializations/genomic-data-science" target="_blank" style="padding:10px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--purple)'" onmouseout="this.style.borderColor='var(--bd)'">
             <div style="font-size:12px;font-weight:500;color:var(--tx);">Genomic Data Science</div>
@@ -384,11 +395,11 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
           </a>
           <a href="http://rosalind.info" target="_blank" style="padding:10px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--amber)'" onmouseout="this.style.borderColor='var(--bd)'">
             <div style="font-size:12px;font-weight:500;color:var(--tx);">Rosalind.info</div>
-            <div style="font-size:10px;font-family:var(--mono);color:var(--amber);margin-top:3px;">Gratis · Bioinformatica-puzzels · Python</div>
+            <div style="font-size:10px;font-family:var(--mono);color:#E8A020;margin-top:3px;" data-i18n="rosalind_meta">Gratis · Bioinformatica-puzzels · Python</div>
           </a>
           <a href="https://www.ebi.ac.uk/training" target="_blank" style="padding:10px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='var(--bd)'">
             <div style="font-size:12px;font-weight:500;color:var(--tx);">EMBL-EBI Training</div>
-            <div style="font-size:10px;font-family:var(--mono);color:var(--green);margin-top:3px;">Gratis · Online workshops · EU</div>
+            <div style="font-size:10px;font-family:var(--mono);color:var(--green);margin-top:3px;" data-i18n="ebi_meta">Gratis · Online workshops · EU</div>
           </a>
         </div>
       </div>
@@ -400,28 +411,200 @@ footer{border-top:1px solid var(--bd);padding:28px 44px;display:flex;justify-con
 <!-- ══ CTA ══ -->
 <section class="cta-section">
   <div class="container reveal">
-    <div style="font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:16px;">Nu je weet waarom</div>
-    <h2 class="cta-title">Klaar om te <em style="font-style:italic;">beginnen</em>?</h2>
-    <p class="cta-sub">97% van alle schimmelsoorten is onontdekt. Elk ongesequenceerd genoom is een bibliotheek die nog nooit iemand opengeslagen heeft. De tools bestaan. De kennis is hier.</p>
-    <a href="mycoscope-cursus.html#cursus" class="cta-btn">Begin de cursus — gratis →</a>
-    <div class="cta-note">Geen aanmelding vereist · Geen kosten · Werkt offline (PWA)</div>
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:16px;" data-i18n="cta_eyebrow">Nu je weet waarom</div>
+    <h2 class="cta-title" data-i18n="cta_title">Klaar om te <em style="font-style:italic;">beginnen</em>?</h2>
+    <p class="cta-sub" data-i18n="cta_sub">97% van alle schimmelsoorten is onontdekt. Elk ongesequenceerd genoom is een bibliotheek die nog nooit iemand opengeslagen heeft. De tools bestaan. De kennis is hier.</p>
+    <a href="index.html" class="cta-btn" data-i18n="cta_btn">Begin de cursus — gratis →</a>
+    <div class="cta-note" data-i18n="cta_note">Geen aanmelding vereist · Geen kosten · Werkt offline (PWA)</div>
   </div>
 </section>
 
 <footer>
-  <div style="font-family:var(--mono);font-size:10px;color:var(--tx2);">MycoScope Cursus · Start With Why · Simon Sinek's Golden Circle</div>
-  <a href="mycoscope-cursus.html" style="font-size:12px;color:var(--teal);text-decoration:none;">→ Naar de volledige cursus</a>
+  <div style="font-family:var(--mono);font-size:10px;color:var(--tx2);" data-i18n="footer_text">MycoScope Cursus · Start With Why · Simon Sinek's Golden Circle</div>
+  <a href="index.html" style="font-size:12px;color:var(--teal);text-decoration:none;" data-i18n="footer_link">→ Naar de volledige cursus</a>
 </footer>
 
 <script>
+// ─── i18n ────────────────────────────────────────────────────
+const T = {
+  nl: {
+    why_label:'De cursus · Simon Sinek\'s Golden Circle',
+    why_title:'Niet <em>wat</em> we doen.<br>Niet <em>hoe</em> we het doen.<br>Maar <em>waarom</em> het ertoe doet.',
+    why_sub:'Elk antibioticum dat je ooit nam, redde ooit iemands leven dankzij een schimmel. Elke therapie die vandaag kankercellen bestrijdt, begon met iemand die een genoom las. Dit is die vaardigheid.',
+    gc_why:'WAAROM', gc_how:'HOE', gc_what:'WAT',
+    gc_caption:'Meeste cursussen beginnen bij WAT (tools, code, syntax).<br>Wij beginnen bij WAAROM — de reden dat het de moeite waard is.',
+    scroll_label:'Begin het verhaal',
+    why_circle_label:'Waarom · Purpose · Cause · Belief',
+    why_section_title:'Elk leven dat ik ken,<br>werd <em style="color:var(--gold2);">gered door een schimmel.</em>',
+    why_section_body:'Je weet het waarschijnlijk niet, maar elke keer dat je antibiotica slikte, hielp een schimmel je overleven. Elke orgaantransplantatie die werkte, lukte dankzij cyclosporine — uit een bodemschimmel geïsoleerd in Noorwegen in 1969.<br><br><strong>97% van alle schimmelsoorten is nooit beschreven.</strong> Dat zijn miljoenen soorten die we niet kennen, niet begrijpen, nooit bestudeerd hebben. Elke onbekende soort is een bibliotheek vol chemische verbindingen die we nog nooit gelezen hebben.<br><br>Jij kan die bibliotheken openen. Met een MinION op je bureau, een laptop, en de kennis die je in deze cursus opdoet, kun je het genoom lezen van een schimmel die nog nooit iemand heeft bestudeerd. Dat is niet overdreven. Dat is letterlijk waar.',
+    card1_year:'1928 · Londen',
+    card1_title:'Het beschimmelde petrischaaltje dat de wereld veranderde',
+    card1_body:'Alexander Fleming vergat zijn laboratorium op te ruimen voor zijn vakantie. Toen hij terugkwam, had <em>Penicillium notatum</em> zijn bacteriën gekaapt. De schimmel had een chemisch wapen geperfectioneerd over miljarden jaren evolutie. Fleming zag het. De rest is geschiedenis.',
+    card1_impact:'~200.000 levens gered in WOII. Miljoenen sindsdien.',
+    card2_title:'De bodemschimmel die orgaantransplantaties mogelijk maakte',
+    card2_body:'Sandoz-onderzoekers namen bodemmonsters mee van een vakantie in Noorwegen. Eén monster bevatte <em>Tolypocladium inflatum</em> — een schimmel die cyclosporine maakt. Zonder dit immunosuppressivum zouden alle getransplanteerde harten en nieren zijn afgestoten.',
+    card2_impact:'Elk jaar 140.000+ orgaantransplantaties mogelijk gemaakt.',
+    card3_year:'Nu · Jouw bureau',
+    card3_title:'De ontdekking die jij kunt maken',
+    card3_body:'Een MinION past in je zak. Een gram bodem bevat honderden schimmelsoorten. Met MycoScope en de kennis uit deze cursus kun je hun genomen lezen, hun biosynthese-clusters vinden, hun chemie begrijpen — en misschien de volgende levensreddende verbinding identificeren.',
+    card3_impact:'97% van alle schimmelsoorten: nog niet beschreven.',
+    pq1_text:'Mensen kopen niet wat je doet. Ze kopen waarom je het doet.',
+    whyyou_circle_label:'Waarom jij · Persoonlijke impact',
+    whyyou_title:'Wat jij ermee <em style="color:var(--gold2);">kunt doen</em>',
+    whyyou_body:'Bioinformatica is niet meer een specialisme voor computerwetenschappers. Het is een basisvaardigheid geworden — zoals statistiek of lab-technieken. De tools zijn nu zo toegankelijk dat elke bioloog, schimmelonderzoeker, of veldecolog ze kan gebruiken.',
+    wy1_title:'Als je met schimmels of planten werkt',
+    wy1_body:'Jij hebt nu directe toegang tot de complete genetische blauwdruk van je organisme. Welk gen is verantwoordelijk voor virulentie? Welke biosynthese-clusters zijn actief? Hoe verhoudt jouw stam zich tot andere? Vragen die vroeger weken of maanden kostten, beantwoord je nu in uren.',
+    wy2_title:'Als je in medisch onderzoek werkt',
+    wy2_body:'Invasieve aspergillose doodt 50% van de patiënten. Antibioticaresistentie doodt 1,3 miljoen mensen per jaar. CRISPR-gebaseerde diagnostiek en behandelingen zijn in opkomst. De kennis in deze cursus is direct relevant voor het zoeken naar nieuwe targets en behandelingen.',
+    wy3_title:'Als je in ecologie of landbouw werkt',
+    wy3_body:'90% van landplanten leeft in symbiose met schimmels. Schimmelziekten vernietigen 20-30% van alle gewasopbrengsten. ITS-barcode metagenomics kan de complete mycobioom van een bodemmonster in kaart brengen — van één gram grond tot de complete schimmelbiodiversiteit van een ecosysteem.',
+    wy4_title:'Als je student of docent bent',
+    wy4_body:'Deze cursus bereidt je voor op Coursera-specialisaties (Bioinformatics Specialization UC San Diego, Genomic Data Science JHU) en op echte wetenschappelijke projecten. Na deze cursus spreek je de taal van genomics — en kun je de tools begrijpen die de biologische revolutie van deze eeuw aandrijven.',
+    pq2_text:'De vraag is niet of we de gereedschappen hebben om het genoom te lezen. De vraag is of we de moed hebben om de consequenties van de antwoorden te dragen.',
+    how_circle_label:'Hoe · Process · Method',
+    how_title:'Van DNA tot <em style="color:var(--teal);">betekenis</em>',
+    how_body:'Genomics is geen magie. Het is een reeks stappen — elk begrijpelijk, elk met een duidelijke reden. Dit is het proces dat je leert beheersen.',
+    how1_title:'DNA isoleren en sequencen',
+    how1_body:'Het begint in het lab: DNA uit een cel extraheren, amplificeren waar nodig, en door een sequencing-machine sturen. Illumina leest korte stukjes snel en goedkoop. Nanopore leest lange stukjes in real-time, past in je zak, en kost &lt;$1000 voor het apparaat zelf.',
+    how2_title:'Kwaliteitscontrole en assembly',
+    how2_body:'Ruwe reads zijn imperfect. Kwaliteitsfiltering verwijdert slechte reads. Assembly plakt overlappende reads samen tot chromosomen — zoals een puzzel zonder voorbeeldplaatje. Het resultaat: de volledige DNA-sequentie van het organisme, scaffold voor scaffold.',
+    how3_title:'Genen annoteren en vergelijken',
+    how3_body:'Een ruwe DNA-sequentie is als een boek zonder spaties of leestekens. Annotatie voegt structuur toe: het identificeert genen, exonen, introns, promotoren. Vergelijkende genomics toont welke genen geconserveerd zijn over soorten heen — en welke uniek zijn voor jouw organisme.',
+    how4_title:'Experimenteel interveniëren',
+    how4_body:'CRISPR-Cas9 maakt het mogelijk om specifieke genen uit te schakelen of te wijzigen. Je ontwerpt een 20-nucleotide guide RNA, transformeert het organisme, en valideert het resultaat met sequencing. De complete cirkel: ontdekking → hypothese → experiment → bevestiging.',
+    how5_title:'Publiceren en delen',
+    how5_body:'Wetenschap bestaat pas als het gedeeld wordt. Data deponeren in NCBI, methoden documenteren, figuren maken die het verhaal vertellen. MycoScope genereert de methoden-paragraaf, figuren en supplementary-tabellen automatisch — klaar voor indiening bij Nature, mBio, of PLOS.',
+    what_circle_label:'Wat · The course · 5 eenheden · ~5 uur',
+    what_title:'De <em style="color:var(--purple);">vijf eenheden</em>',
+    what_body:'Nu je weet waarom het ertoe doet en hoe het proces werkt, is dit wat je concreet leert. Elke eenheid bouwt voort op de vorige. Je hoeft niets vooraf te weten.',
+    u1_num:'Eenheid 1', u1_title:'DNA & Moleculaire Basis', u1_meta:'5 lessen · ~84 min',
+    u1_body:'Van het ontdekken van de dubbelhelix tot het centrale dogma. Genen, chromosomen, GC-gehalte.',
+    u1_tag:'Geen voorkennis nodig',
+    u2_num:'Eenheid 2', u2_title:'Sequencing & Data', u2_meta:'5 lessen · ~82 min',
+    u2_body:'FASTQ-formaat, kwaliteitsscores, assembly-statistieken (N50, BUSCO), de MinION-pipeline.',
+    u2_tag:'Praktisch',
+    u3_num:'Eenheid 3', u3_title:'CRISPR & Editering', u3_meta:'5 lessen · ~84 min',
+    u3_body:'Cas9, PAM-sequenties, gRNA-ontwerp, off-target analyse, base editing, prime editing.',
+    u3_tag:'Nobelprijs 2020',
+    u4_num:'Eenheid 4', u4_title:'Vergelijkende Genomics', u4_meta:'3 lessen · ~48 min',
+    u4_body:'Fylogenie, ITS-barcode, UNITE-database, biosynthese-clusters, secundaire metabolieten.',
+    u4_tag:'Schimmelfocus',
+    u5_num:'Eenheid 5', u5_title:'Data-analyse & Publicatie', u5_meta:'5 lessen · ~76 min',
+    u5_body:'RNA-seq, differentiële expressie, statistiek, FAIR-data, reproduceerbare analyse, publiceren.',
+    u5_tag:'→ Coursera-ready',
+    coursera_label:'Na deze cursus: aanbevolen vervolgpaden',
+    rosalind_meta:'Gratis · Bioinformatica-puzzels · Python',
+    ebi_meta:'Gratis · Online workshops · EU',
+    cta_eyebrow:'Nu je weet waarom',
+    cta_title:'Klaar om te <em style="font-style:italic;">beginnen</em>?',
+    cta_sub:'97% van alle schimmelsoorten is onontdekt. Elk ongesequenceerd genoom is een bibliotheek die nog nooit iemand opengeslagen heeft. De tools bestaan. De kennis is hier.',
+    cta_btn:'Begin de cursus — gratis →',
+    cta_note:'Geen aanmelding vereist · Geen kosten · Werkt offline (PWA)',
+    footer_text:'MycoScope Cursus · Start With Why · Simon Sinek\'s Golden Circle',
+    footer_link:'→ Naar de volledige cursus',
+  },
+  en: {
+    why_label:'The course · Simon Sinek\'s Golden Circle',
+    why_title:'Not <em>what</em> we do.<br>Not <em>how</em> we do it.<br>But <em>why</em> it matters.',
+    why_sub:'Every antibiotic you have ever taken saved someone\'s life thanks to a fungus. Every therapy fighting cancer cells today began with someone reading a genome. This is that skill.',
+    gc_why:'WHY', gc_how:'HOW', gc_what:'WHAT',
+    gc_caption:'Most courses start with WHAT (tools, code, syntax).<br>We start with WHY — the reason it\'s worth doing.',
+    scroll_label:'Begin the story',
+    why_circle_label:'Why · Purpose · Cause · Belief',
+    why_section_title:'Every life I know<br>was <em style="color:var(--gold2);">saved by a fungus.</em>',
+    why_section_body:'You probably don\'t know it, but every time you took antibiotics, a fungus helped you survive. Every organ transplant that worked succeeded thanks to cyclosporine — isolated from a soil fungus in Norway in 1969.<br><br><strong>97% of all fungal species have never been described.</strong> That is millions of species we do not know, do not understand, have never studied. Every unknown species is a library of chemical compounds we have never read.<br><br>You can open those libraries. With a MinION on your desk, a laptop, and the knowledge you gain in this course, you can read the genome of a fungus no one has ever studied. That is not an exaggeration. That is literally true.',
+    card1_year:'1928 · London',
+    card1_title:'The moldy petri dish that changed the world',
+    card1_body:'Alexander Fleming forgot to clean his laboratory before his vacation. When he returned, <em>Penicillium notatum</em> had taken over his bacteria. The fungus had perfected a chemical weapon over billions of years of evolution. Fleming saw it. The rest is history.',
+    card1_impact:'~200,000 lives saved in WWII. Millions since.',
+    card2_title:'The soil fungus that made organ transplants possible',
+    card2_body:'Sandoz researchers brought back soil samples from a holiday in Norway. One sample contained <em>Tolypocladium inflatum</em> — a fungus that produces cyclosporine. Without this immunosuppressant, all transplanted hearts and kidneys would have been rejected.',
+    card2_impact:'Enabling 140,000+ organ transplants every year.',
+    card3_year:'Now · Your desk',
+    card3_title:'The discovery you can make',
+    card3_body:'A MinION fits in your pocket. A gram of soil contains hundreds of fungal species. With MycoScope and the knowledge from this course, you can read their genomes, find their biosynthetic clusters, understand their chemistry — and perhaps identify the next life-saving compound.',
+    card3_impact:'97% of all fungal species: never described.',
+    pq1_text:'People don\'t buy what you do. They buy why you do it.',
+    whyyou_circle_label:'Why you · Personal impact',
+    whyyou_title:'What you can <em style="color:var(--gold2);">do with it</em>',
+    whyyou_body:'Bioinformatics is no longer a specialty for computer scientists. It has become a basic skill — like statistics or lab techniques. The tools are now so accessible that any biologist, mycologist, or field ecologist can use them.',
+    wy1_title:'If you work with fungi or plants',
+    wy1_body:'You now have direct access to the complete genetic blueprint of your organism. Which gene is responsible for virulence? Which biosynthetic clusters are active? How does your strain compare to others? Questions that used to take weeks or months, you can now answer in hours.',
+    wy2_title:'If you work in medical research',
+    wy2_body:'Invasive aspergillosis kills 50% of patients. Antibiotic resistance kills 1.3 million people per year. CRISPR-based diagnostics and treatments are emerging. The knowledge in this course is directly relevant to finding new targets and treatments.',
+    wy3_title:'If you work in ecology or agriculture',
+    wy3_body:'90% of land plants live in symbiosis with fungi. Fungal diseases destroy 20–30% of all crop yields. ITS barcode metagenomics can map the complete mycobiome of a soil sample — from one gram of soil to the complete fungal biodiversity of an ecosystem.',
+    wy4_title:'If you are a student or teacher',
+    wy4_body:'This course prepares you for Coursera specializations (Bioinformatics Specialization UC San Diego, Genomic Data Science JHU) and real scientific projects. After this course, you speak the language of genomics — and can understand the tools driving this century\'s biological revolution.',
+    pq2_text:'The question is not whether we have the tools to read the genome. The question is whether we have the courage to bear the consequences of the answers.',
+    how_circle_label:'How · Process · Method',
+    how_title:'From DNA to <em style="color:var(--teal);">meaning</em>',
+    how_body:'Genomics is not magic. It is a series of steps — each understandable, each with a clear reason. This is the process you will learn to master.',
+    how1_title:'Isolating and sequencing DNA',
+    how1_body:'It starts in the lab: extracting DNA from a cell, amplifying where needed, and running it through a sequencing machine. Illumina reads short fragments quickly and cheaply. Nanopore reads long fragments in real-time, fits in your pocket, and costs &lt;$1,000 for the device itself.',
+    how2_title:'Quality control and assembly',
+    how2_body:'Raw reads are imperfect. Quality filtering removes bad reads. Assembly stitches overlapping reads together into chromosomes — like a puzzle without the reference image. The result: the complete DNA sequence of the organism, scaffold by scaffold.',
+    how3_title:'Annotating and comparing genes',
+    how3_body:'A raw DNA sequence is like a book without spaces or punctuation. Annotation adds structure: it identifies genes, exons, introns, promoters. Comparative genomics shows which genes are conserved across species — and which are unique to your organism.',
+    how4_title:'Experimental intervention',
+    how4_body:'CRISPR-Cas9 makes it possible to knock out or modify specific genes. You design a 20-nucleotide guide RNA, transform the organism, and validate the result with sequencing. The complete circle: discovery → hypothesis → experiment → confirmation.',
+    how5_title:'Publishing and sharing',
+    how5_body:'Science only exists when it is shared. Deposit data in NCBI, document methods, create figures that tell the story. MycoScope generates the methods section, figures, and supplementary tables automatically — ready for submission to Nature, mBio, or PLOS.',
+    what_circle_label:'What · The course · 5 units · ~5 hours',
+    what_title:'The <em style="color:var(--purple);">five units</em>',
+    what_body:'Now that you know why it matters and how the process works, this is what you will concretely learn. Each unit builds on the previous. You need no prior knowledge.',
+    u1_num:'Unit 1', u1_title:'DNA & Molecular Basis', u1_meta:'5 lessons · ~84 min',
+    u1_body:'From the discovery of the double helix to the central dogma. Genes, chromosomes, GC content.',
+    u1_tag:'No prior knowledge needed',
+    u2_num:'Unit 2', u2_title:'Sequencing & Data', u2_meta:'5 lessons · ~82 min',
+    u2_body:'FASTQ format, quality scores, assembly statistics (N50, BUSCO), the MinION pipeline.',
+    u2_tag:'Hands-on',
+    u3_num:'Unit 3', u3_title:'CRISPR & Editing', u3_meta:'5 lessons · ~84 min',
+    u3_body:'Cas9, PAM sequences, gRNA design, off-target analysis, base editing, prime editing.',
+    u3_tag:'Nobel Prize 2020',
+    u4_num:'Unit 4', u4_title:'Comparative Genomics', u4_meta:'3 lessons · ~48 min',
+    u4_body:'Phylogeny, ITS barcode, UNITE database, biosynthetic clusters, secondary metabolites.',
+    u4_tag:'Fungi focus',
+    u5_num:'Unit 5', u5_title:'Data Analysis & Publication', u5_meta:'5 lessons · ~76 min',
+    u5_body:'RNA-seq, differential expression, statistics, FAIR data, reproducible analysis, publishing.',
+    u5_tag:'→ Coursera-ready',
+    coursera_label:'After this course: recommended next steps',
+    rosalind_meta:'Free · Bioinformatics puzzles · Python',
+    ebi_meta:'Free · Online workshops · EU',
+    cta_eyebrow:'Now that you know why',
+    cta_title:'Ready to <em style="font-style:italic;">begin</em>?',
+    cta_sub:'97% of all fungal species remain undiscovered. Every unsequenced genome is a library no one has ever opened. The tools exist. The knowledge is here.',
+    cta_btn:'Start the course — free →',
+    cta_note:'No sign-up required · Free · Works offline (PWA)',
+    footer_text:'MycoScope Course · Start With Why · Simon Sinek\'s Golden Circle',
+    footer_link:'→ To the full course',
+  }
+};
+
+let currentLang = localStorage.getItem('mcs-lang') || 'nl';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('mcs-lang', lang);
+  document.documentElement.lang = lang;
+  document.title = lang === 'en'
+    ? 'MycoScope — Why This All Matters'
+    : 'MycoScope Cursus — Waarom dit alles ertoe doet';
+  document.getElementById('btnNL').classList.toggle('active', lang === 'nl');
+  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (T[lang][k] !== undefined) el.innerHTML = T[lang][k];
+  });
+}
+
 // Stars
 const sf = document.getElementById('stars');
 for (let i = 0; i < 200; i++) {
   const s = document.createElement('div');
   s.className = 'star';
   const sz = Math.random() * 2 + 0.3;
-  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:none;`;
-  // Subtle twinkle for some stars
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};`;
   if (Math.random() > 0.7) {
     s.style.animation = `fadeUp ${Math.random()*3+2}s ${Math.random()*3}s ease-in-out infinite alternate`;
   }
@@ -433,6 +616,9 @@ const obs = new IntersectionObserver(es => {
   es.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Init language
+setLang(currentLang);
 </script>
 </body>
 </html>
