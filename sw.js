@@ -2,7 +2,7 @@
 // Offline-first cache + Push Notifications + Background Sync
 
 const CACHE = 'mycoscope-v2';
-const OFFLINE_URLS = ['./', './index.html', './manifest.json'];
+const OFFLINE_URLS = ['./', './index.html', './cursus.html', './manifest.json'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE_URLS)).then(() => self.skipWaiting()));
