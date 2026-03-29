@@ -788,6 +788,11 @@ footer {
   to   { opacity: 1; transform: none; }
 }
 
+/* ─── LANG TOGGLE ─── */
+.lang-toggle{display:flex;gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:6px;padding:3px;}
+.lang-btn{padding:3px 9px;border-radius:4px;border:none;background:none;cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--tx1);transition:all .15s;}
+.lang-btn.active{background:var(--bg4);color:var(--tx);}
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
   nav { padding: 0 20px; }
@@ -822,11 +827,15 @@ footer {
   </a>
   <div class="nav-links">
     <a href="#features">Features</a>
-    <a href="#download">Download</a>
-    <a href="#cursus">Cursus</a>
-    <a href="#nieuwsbrief">Nieuwsbrief</a>
+    <a href="download.html" data-i18n="nav_dl">Download</a>
+    <a href="#cursus" data-i18n="nav_course">Cursus</a>
+    <a href="why.html" data-i18n="nav_why">Waarom</a>
   </div>
-  <a href="#download" class="nav-cta">↓ Download alfa</a>
+  <div class="lang-toggle" style="margin-right:12px;">
+    <button class="lang-btn" id="btnNL" onclick="setLang('nl')">NL</button>
+    <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+  </div>
+  <a href="download.html" class="nav-cta" data-i18n="nav_cta">↓ Download alfa</a>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -841,21 +850,21 @@ footer {
 
   <div class="hero-eyebrow">Open-source genomics platform</div>
 
-  <h1 class="hero-title">
+  <h1 class="hero-title" data-i18n="hero_title">
     Van bodemmonster<br>
     tot <em>genomisch inzicht</em>
   </h1>
 
-  <p class="hero-sub">
+  <p class="hero-sub" data-i18n="hero_sub">
     MycoScope brengt de krachtigste bioinformatica-tools voor schimmels en planten naar je eigen laptop. Gratis, offline, en gebouwd voor iedereen — van universitair onderzoeker tot citizen scientist.
   </p>
 
   <div class="hero-actions">
-    <a href="#download" class="btn-primary">
+    <a href="download.html" class="btn-primary" data-i18n="hero_btn_dl">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3M2 11v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Download alfa — gratis
     </a>
-    <a href="#cursus" class="btn-secondary">
+    <a href="#cursus" class="btn-secondary" data-i18n="hero_btn_course">
       Bekijk de cursus →
     </a>
   </div>
@@ -863,15 +872,15 @@ footer {
   <div class="hero-stats">
     <div class="stat-item">
       <span class="stat-n"><em>49</em></span>
-      <span class="stat-l">lessen</span>
+      <span class="stat-l" data-i18n="stat_lessons">lessen</span>
     </div>
     <div class="stat-item">
-      <span class="stat-n"><em>17</em> uur</span>
-      <span class="stat-l">cursusinhoud</span>
+      <span class="stat-n"><em>17</em> <span data-i18n="stat_hours">uur</span></span>
+      <span class="stat-l" data-i18n="stat_content">cursusinhoud</span>
     </div>
     <div class="stat-item">
       <span class="stat-n"><em>97%</em></span>
-      <span class="stat-l">schimmels onontdekt</span>
+      <span class="stat-l" data-i18n="stat_fungi">schimmels onontdekt</span>
     </div>
     <div class="stat-item">
       <span class="stat-n"><em>3</em> platforms</span>
@@ -879,7 +888,7 @@ footer {
     </div>
     <div class="stat-item">
       <span class="stat-n"><em>€0</em></span>
-      <span class="stat-l">altijd gratis</span>
+      <span class="stat-l" data-i18n="stat_free">altijd gratis</span>
     </div>
   </div>
 </section>
@@ -890,30 +899,30 @@ footer {
 <section class="section" id="voor-wie">
 <div class="container">
   <div class="reveal">
-    <div class="section-label" style="color:var(--teal);">Voor wie</div>
-    <h2 class="section-title">Genomics was voor <em>iedereen</em><br>altijd al bedoeld</h2>
-    <p class="section-sub">Eén platform. Vier werelden. Of je nu in een lab werkt, een veld instapt, een klas geeft, of thuis een microscoop hebt — MycoScope is voor jou gebouwd.</p>
+    <div class="section-label" style="color:var(--teal);" data-i18n="aud_label">Voor wie</div>
+    <h2 class="section-title" data-i18n="aud_title">Genomics was voor <em>iedereen</em><br>altijd al bedoeld</h2>
+    <p class="section-sub" data-i18n="aud_sub">Eén platform. Vier werelden. Of je nu in een lab werkt, een veld instapt, een klas geeft, of thuis een microscoop hebt — MycoScope is voor jou gebouwd.</p>
   </div>
   <div class="audience-grid reveal" style="transition-delay:.1s;">
     <div class="aud-card">
       <span class="aud-icon">🔬</span>
-      <div class="aud-title">Universitaire onderzoekers</div>
-      <div class="aud-body">Van CRISPR-ontwerp tot RNA-seq analyse, van BGC-detectie tot pan-genomics. Publicatie-klare methoden en figuren ingebouwd. Koppelt naadloos aan Snakemake en Nextflow.</div>
+      <div class="aud-title" data-i18n="aud1_title">Universitaire onderzoekers</div>
+      <div class="aud-body" data-i18n="aud1_body">Van CRISPR-ontwerp tot RNA-seq analyse, van BGC-detectie tot pan-genomics. Publicatie-klare methoden en figuren ingebouwd. Koppelt naadloos aan Snakemake en Nextflow.</div>
     </div>
     <div class="aud-card">
       <span class="aud-icon">🎓</span>
-      <div class="aud-title">Studenten & docenten</div>
-      <div class="aud-body">De ingebouwde cursus van 17 uur begeleidt je van DNA-basiskennis tot een volledig genomics-experiment. Geschreven als een kwaliteitskrant, niet als een leerboek.</div>
+      <div class="aud-title" data-i18n="aud2_title">Studenten &amp; docenten</div>
+      <div class="aud-body" data-i18n="aud2_body">De ingebouwde cursus van 17 uur begeleidt je van DNA-basiskennis tot een volledig genomics-experiment. Geschreven als een kwaliteitskrant, niet als een leerboek.</div>
     </div>
     <div class="aud-card">
       <span class="aud-icon">🌿</span>
-      <div class="aud-title">Veldmycologen</div>
-      <div class="aud-body">ITS-barcode identificatie van isolaten, metagenomics van bodemmonsters, koppeling aan UNITE. Werkt volledig offline — ook in het veld zonder internetverbinding.</div>
+      <div class="aud-title" data-i18n="aud3_title">Veldmycologen</div>
+      <div class="aud-body" data-i18n="aud3_body">ITS-barcode identificatie van isolaten, metagenomics van bodemmonsters, koppeling aan UNITE. Werkt volledig offline — ook in het veld zonder internetverbinding.</div>
     </div>
     <div class="aud-card">
       <span class="aud-icon">🧪</span>
-      <div class="aud-title">Citizen scientists</div>
-      <div class="aud-body">Een MinION-sequencer kost £1.000 en past in je zak. Met MycoScope heb je alles wat je nodig hebt om thuis echte genomics-wetenschap te doen. Geen PhD vereist.</div>
+      <div class="aud-title" data-i18n="aud4_title">Citizen scientists</div>
+      <div class="aud-body" data-i18n="aud4_body">Een MinION-sequencer kost £1.000 en past in je zak. Met MycoScope heb je alles wat je nodig hebt om thuis echte genomics-wetenschap te doen. Geen PhD vereist.</div>
     </div>
   </div>
 </div>
@@ -925,73 +934,73 @@ footer {
 <section class="section" id="features" style="background:var(--bg1);">
 <div class="container">
   <div class="reveal">
-    <div class="section-label" style="color:var(--gold2);">Wat MycoScope doet</div>
-    <h2 class="section-title">De volledige cirkel —<br>van <em style="color:var(--gold2);">sequencing</em> tot publicatie</h2>
-    <p class="section-sub">Geen losse tools die je aan elkaar moet plakken. Eén platform dat de volledige genomics-workflow ondersteunt, van ruwe FASTQ tot ingediend manuscript.</p>
+    <div class="section-label" style="color:var(--gold2);" data-i18n="feat_label">Wat MycoScope doet</div>
+    <h2 class="section-title" data-i18n="feat_title">De volledige cirkel —<br>van <em style="color:var(--gold2);">sequencing</em> tot publicatie</h2>
+    <p class="section-sub" data-i18n="feat_sub">Geen losse tools die je aan elkaar moet plakken. Eén platform dat de volledige genomics-workflow ondersteunt, van ruwe FASTQ tot ingediend manuscript.</p>
   </div>
   <div class="features-grid reveal" style="transition-delay:.1s;">
 
     <div class="feat-card teal">
       <div class="feat-icon teal">🧬</div>
-      <div class="feat-title">Genoomviewer</div>
-      <div class="feat-body">Interactieve chromosoomkaart met BGC-clusters, genfuncties en syntenie-vergelijking. Klik op elk gen voor volledige annotatie, FungiDB-links en expressiedata.</div>
-      <span class="feat-tag teal">Kern</span>
+      <div class="feat-title" data-i18n="f1_title">Genoomviewer</div>
+      <div class="feat-body" data-i18n="f1_body">Interactieve chromosoomkaart met BGC-clusters, genfuncties en syntenie-vergelijking. Klik op elk gen voor volledige annotatie, FungiDB-links en expressiedata.</div>
+      <span class="feat-tag teal" data-i18n="f1_tag">Kern</span>
     </div>
 
     <div class="feat-card gold">
       <div class="feat-icon gold">✂️</div>
-      <div class="feat-title">CRISPR-designer</div>
-      <div class="feat-body">Scan elk gen op gRNA-kandidaten. SpCas9, SaCas9, AsCas12a. Automatische off-target analyse met CFD-scoring. Export direct naar IDT voor synthese.</div>
-      <span class="feat-tag gold">Experiment</span>
+      <div class="feat-title" data-i18n="f2_title">CRISPR-designer</div>
+      <div class="feat-body" data-i18n="f2_body">Scan elk gen op gRNA-kandidaten. SpCas9, SaCas9, AsCas12a. Automatische off-target analyse met CFD-scoring. Export direct naar IDT voor synthese.</div>
+      <span class="feat-tag gold" data-i18n="f2_tag">Experiment</span>
     </div>
 
     <div class="feat-card purple">
       <div class="feat-icon purple">📊</div>
-      <div class="feat-title">RNA-seq analyse</div>
-      <div class="feat-body">DESeq2-gebaseerde differentiële expressie. Volcano plots, heatmaps, PCA, GO-enrichment. Van ruwe FASTQ tot biologische conclusie in één workflow.</div>
-      <span class="feat-tag purple">Analyse</span>
+      <div class="feat-title" data-i18n="f3_title">RNA-seq analyse</div>
+      <div class="feat-body" data-i18n="f3_body">DESeq2-gebaseerde differentiële expressie. Volcano plots, heatmaps, PCA, GO-enrichment. Van ruwe FASTQ tot biologische conclusie in één workflow.</div>
+      <span class="feat-tag purple" data-i18n="f3_tag">Analyse</span>
     </div>
 
     <div class="feat-card teal">
       <div class="feat-icon teal">⚗️</div>
-      <div class="feat-title">BGC-detectie</div>
-      <div class="feat-body">antiSMASH-integratie voor het vinden van biosynthese-genclusters. Vergelijking met MIBiG. Identificeer potentieel nieuwe antibiotica in onbekende schimmelgenomen.</div>
-      <span class="feat-tag teal">Ontdekking</span>
+      <div class="feat-title" data-i18n="f4_title">BGC-detectie</div>
+      <div class="feat-body" data-i18n="f4_body">antiSMASH-integratie voor het vinden van biosynthese-genclusters. Vergelijking met MIBiG. Identificeer potentieel nieuwe antibiotica in onbekende schimmelgenomen.</div>
+      <span class="feat-tag teal" data-i18n="f4_tag">Ontdekking</span>
     </div>
 
     <div class="feat-card gold">
       <div class="feat-icon gold">🧫</div>
-      <div class="feat-title">Variant Calling</div>
-      <div class="feat-body">Valideer CRISPR-edits automatisch. Upload wildtype + mutant FASTQ, MycoScope aligneert met Minimap2, roept varianten aan met bcftools en bevestigt de edit.</div>
-      <span class="feat-tag gold">Validatie</span>
+      <div class="feat-title" data-i18n="f5_title">Variant Calling</div>
+      <div class="feat-body" data-i18n="f5_body">Valideer CRISPR-edits automatisch. Upload wildtype + mutant FASTQ, MycoScope aligneert met Minimap2, roept varianten aan met bcftools en bevestigt de edit.</div>
+      <span class="feat-tag gold" data-i18n="f5_tag">Validatie</span>
     </div>
 
     <div class="feat-card purple">
       <div class="feat-icon purple">🌳</div>
-      <div class="feat-title">Fylogenie & metagenomics</div>
-      <div class="feat-body">ITS-barcode identificatie, fylogenetische bomen met bootstrap-validatie, UNITE-database integratie. Metagenomics van bodemmonsters met diversiteitsstatistieken.</div>
-      <span class="feat-tag purple">Ecologie</span>
+      <div class="feat-title" data-i18n="f6_title">Fylogenie &amp; metagenomics</div>
+      <div class="feat-body" data-i18n="f6_body">ITS-barcode identificatie, fylogenetische bomen met bootstrap-validatie, UNITE-database integratie. Metagenomics van bodemmonsters met diversiteitsstatistieken.</div>
+      <span class="feat-tag purple" data-i18n="f6_tag">Ecologie</span>
     </div>
 
     <div class="feat-card teal">
       <div class="feat-icon teal">🤖</div>
-      <div class="feat-title">AI-assistent</div>
-      <div class="feat-body">PubMed RAG: stel een literatuurvraag en krijg een geciteerd antwoord op basis van echte papers. Hypothesegenerator die na RNA-seq de meest veelbelovende CRISPR-targets voorstelt.</div>
+      <div class="feat-title" data-i18n="f7_title">AI-assistent</div>
+      <div class="feat-body" data-i18n="f7_body">PubMed RAG: stel een literatuurvraag en krijg een geciteerd antwoord op basis van echte papers. Hypothesegenerator die na RNA-seq de meest veelbelovende CRISPR-targets voorstelt.</div>
       <span class="feat-tag teal">AI</span>
     </div>
 
     <div class="feat-card gold">
       <div class="feat-icon gold">☁️</div>
-      <div class="feat-title">Cloud & NAS opslag</div>
-      <div class="feat-body">Directe integratie met AWS S3, Google Cloud, Azure, Backblaze B2, Synology NAS via WebDAV/SMB/NFS. Genomics-data blijft waar jij het wilt.</div>
-      <span class="feat-tag gold">Opslag</span>
+      <div class="feat-title" data-i18n="f8_title">Cloud &amp; NAS opslag</div>
+      <div class="feat-body" data-i18n="f8_body">Directe integratie met AWS S3, Google Cloud, Azure, Backblaze B2, Synology NAS via WebDAV/SMB/NFS. Genomics-data blijft waar jij het wilt.</div>
+      <span class="feat-tag gold" data-i18n="f8_tag">Opslag</span>
     </div>
 
     <div class="feat-card purple">
       <div class="feat-icon purple">📓</div>
-      <div class="feat-title">Lab Notebook & publicatie</div>
-      <div class="feat-body">Elke analyse automatisch gelogd. Genereer publicatie-klare methoden-paragrafen, figuren in Nature/mBio/PLOS-stijl, en FAIR-data exports voor NCBI-indiening.</div>
-      <span class="feat-tag purple">Publicatie</span>
+      <div class="feat-title" data-i18n="f9_title">Lab Notebook &amp; publicatie</div>
+      <div class="feat-body" data-i18n="f9_body">Elke analyse automatisch gelogd. Genereer publicatie-klare methoden-paragrafen, figuren in Nature/mBio/PLOS-stijl, en FAIR-data exports voor NCBI-indiening.</div>
+      <span class="feat-tag purple" data-i18n="f9_tag">Publicatie</span>
     </div>
 
   </div>
@@ -1006,37 +1015,37 @@ footer {
   <div class="download-inner">
     <div class="reveal">
       <div class="section-label" style="color:var(--teal);">Download</div>
-      <h2 class="section-title">MycoScope <em>alfa</em></h2>
-      <p class="section-sub" style="margin-bottom:0;">De eerste publieke release. Volledig functioneel voor genoomanalyse, CRISPR-ontwerp, RNA-seq en BGC-detectie. Gratis, altijd.</p>
+      <h2 class="section-title" data-i18n="dl_title">MycoScope <em>alfa</em></h2>
+      <p class="section-sub" style="margin-bottom:0;" data-i18n="dl_sub">De eerste publieke release. Volledig functioneel voor genoomanalyse, CRISPR-ontwerp, RNA-seq en BGC-detectie. Gratis, altijd.</p>
 
       <div class="dl-platforms">
-        <a href="#" class="dl-btn" onclick="dlClick('mac')">
+        <a href="download.html" class="dl-btn">
           <span class="dl-icon">🍎</span>
           <span class="dl-info">
-            <span class="dl-label">Downloaden voor</span>
+            <span class="dl-label" data-i18n="dl_for">Downloaden voor</span>
             <span class="dl-name">macOS</span>
           </span>
         </a>
-        <a href="#" class="dl-btn" onclick="dlClick('win')">
+        <a href="download.html" class="dl-btn">
           <span class="dl-icon">🪟</span>
           <span class="dl-info">
-            <span class="dl-label">Downloaden voor</span>
+            <span class="dl-label" data-i18n="dl_for">Downloaden voor</span>
             <span class="dl-name">Windows</span>
           </span>
         </a>
-        <a href="#" class="dl-btn" onclick="dlClick('linux')">
+        <a href="download.html" class="dl-btn">
           <span class="dl-icon">🐧</span>
           <span class="dl-info">
-            <span class="dl-label">Downloaden voor</span>
+            <span class="dl-label" data-i18n="dl_for">Downloaden voor</span>
             <span class="dl-name">Linux</span>
           </span>
         </a>
       </div>
 
-      <div class="dl-note">
+      <div class="dl-note" data-i18n="dl_note">
         v0.1.0-alpha · ~35 MB · Vereist: macOS 12+ / Windows 10+ / Ubuntu 20+<br>
-        Open-source · <a href="https://github.com/4ndmstcs68-web/mycoscope-cursus">GitHub</a> ·
-        Meld bugs via <a href="#nieuwsbrief">nieuwsbrief</a>
+        Open-source · <a href="https://github.com/glennmandagi/mycoscope">GitHub</a> ·
+        <a href="download.html">Alle releases →</a>
       </div>
     </div>
 
@@ -1085,14 +1094,14 @@ footer {
 <div class="container">
   <div class="course-inner">
     <div class="reveal">
-      <div class="section-label" style="color:var(--purple);">Gratis cursus</div>
-      <h2 class="section-title">Van <em style="color:var(--purple);">waarom</em> naar<br>hoe naar wat</h2>
-      <p class="section-sub">49 lessen, 17 uur, geschreven als een kwaliteitskrant. Niet droog. Niet technisch. Het verhaal van hoe schimmels de wereld redden — en hoe jij dat kunt bestuderen.</p>
+      <div class="section-label" style="color:var(--purple);" data-i18n="course_label">Gratis cursus</div>
+      <h2 class="section-title" data-i18n="course_title">Van <em style="color:var(--purple);">waarom</em> naar<br>hoe naar wat</h2>
+      <p class="section-sub" data-i18n="course_sub">49 lessen, 17 uur, geschreven als een kwaliteitskrant. Niet droog. Niet technisch. Het verhaal van hoe schimmels de wereld redden — en hoe jij dat kunt bestuderen.</p>
 
       <div class="course-cta-box">
-        <div class="ctb-title">Volledig gratis, altijd</div>
-        <div class="ctb-sub">Geen aanmelding. Geen betaalmuur. Werkt offline als PWA. De cursus is een permanente aanvulling op de app — niet een lokkertje voor een abonnement.</div>
-        <a href="cursus.html" class="btn-primary" style="display:inline-flex;">
+        <div class="ctb-title" data-i18n="ctb_title">Volledig gratis, altijd</div>
+        <div class="ctb-sub" data-i18n="ctb_sub">Geen aanmelding. Geen betaalmuur. Werkt offline als PWA. De cursus is een permanente aanvulling op de app — niet een lokkertje voor een abonnement.</div>
+        <a id="courseStartBtn" href="cursus.html" class="btn-primary" style="display:inline-flex;" data-i18n="ctb_btn">
           ▶ Start de cursus
         </a>
       </div>
@@ -1100,44 +1109,44 @@ footer {
 
     <div class="reveal" style="transition-delay:.1s;">
       <div class="unit-list">
-        <a href="cursus.html#u0" class="unit-item">
+        <a id="u0link" href="cursus.html#u0" class="unit-item">
           <span class="unit-num">UNIT 0</span>
           <span class="unit-icon">🌟</span>
-          <span class="unit-name">Waarom dit alles ertoe doet</span>
-          <span class="unit-meta">6 lessen · 109 min</span>
+          <span class="unit-name" data-i18n="u0_name">Waarom dit alles ertoe doet</span>
+          <span class="unit-meta" data-i18n="u0_meta">6 lessen · 109 min</span>
         </a>
-        <a href="cursus.html#u1" class="unit-item">
+        <a id="u1link" href="cursus.html#u1" class="unit-item">
           <span class="unit-num">UNIT 1</span>
           <span class="unit-icon">🧬</span>
-          <span class="unit-name">De taal van het leven</span>
-          <span class="unit-meta">3 lessen · 60 min</span>
+          <span class="unit-name" data-i18n="u1_name">De taal van het leven</span>
+          <span class="unit-meta" data-i18n="u1_meta">3 lessen · 60 min</span>
         </a>
-        <a href="cursus.html#u2" class="unit-item">
+        <a id="u2link" href="cursus.html#u2" class="unit-item">
           <span class="unit-num">UNIT 2</span>
           <span class="unit-icon">🔬</span>
-          <span class="unit-name">De machine die leest</span>
-          <span class="unit-meta">3 lessen · 60 min</span>
+          <span class="unit-name" data-i18n="u2_name">De machine die leest</span>
+          <span class="unit-meta" data-i18n="u2_meta">3 lessen · 60 min</span>
         </a>
-        <a href="cursus.html#u4" class="unit-item">
+        <a id="u4link" href="cursus.html#u4" class="unit-item">
           <span class="unit-num">UNIT 4</span>
           <span class="unit-icon">🍄</span>
-          <span class="unit-name">Schimmels: de vergeten kwart</span>
-          <span class="unit-meta">4 lessen · 86 min</span>
+          <span class="unit-name" data-i18n="u4_name">Schimmels: de vergeten kwart</span>
+          <span class="unit-meta" data-i18n="u4_meta">4 lessen · 86 min</span>
         </a>
-        <a href="cursus.html#u5" class="unit-item">
+        <a id="u5link" href="cursus.html#u5" class="unit-item">
           <span class="unit-num">UNIT 5</span>
           <span class="unit-icon">✂️</span>
-          <span class="unit-name">CRISPR: het moleculaire schaartje</span>
-          <span class="unit-meta">5 lessen · 113 min</span>
+          <span class="unit-name" data-i18n="u5_name">CRISPR: het moleculaire schaartje</span>
+          <span class="unit-meta" data-i18n="u5_meta">5 lessen · 113 min</span>
         </a>
-        <a href="cursus.html#u9" class="unit-item">
+        <a id="u9link" href="cursus.html#u9" class="unit-item">
           <span class="unit-num">UNIT 9</span>
           <span class="unit-icon">⚙️</span>
-          <span class="unit-name">MycoScope — de app</span>
-          <span class="unit-meta">6 lessen · 147 min</span>
+          <span class="unit-name" data-i18n="u9_name">MycoScope — de app</span>
+          <span class="unit-meta" data-i18n="u9_meta">6 lessen · 147 min</span>
         </a>
-        <a href="cursus.html" class="unit-item" style="border-style:dashed;justify-content:center;">
-          <span style="font-size:13px;color:var(--teal);">+ 5 meer units bekijken →</span>
+        <a id="moreUnitsLink" href="cursus.html" class="unit-item" style="border-style:dashed;justify-content:center;">
+          <span style="font-size:13px;color:var(--teal);" data-i18n="more_units">+ 5 meer units bekijken →</span>
         </a>
       </div>
     </div>
@@ -1150,9 +1159,9 @@ footer {
 <!-- ═══ NIEUWSBRIEF ═══ -->
 <section class="newsletter-section" id="nieuwsbrief">
 <div class="newsletter-inner reveal">
-  <div class="section-label" style="color:var(--gold2);justify-content:center;">Blijf op de hoogte</div>
-  <h2 class="nl-title">De ontdekkingen beginnen<br>met <em>jou</em></h2>
-  <p class="nl-sub">Updates over nieuwe releases, wetenschappelijke ontdekkingen gedaan met MycoScope, en tips voor je genomics-workflow. Maximaal twee keer per maand.</p>
+  <div class="section-label" style="color:var(--gold2);justify-content:center;" data-i18n="nl_label">Blijf op de hoogte</div>
+  <h2 class="nl-title" data-i18n="nl_title">De ontdekkingen beginnen<br>met <em>jou</em></h2>
+  <p class="nl-sub" data-i18n="nl_sub">Updates over nieuwe releases, wetenschappelijke ontdekkingen gedaan met MycoScope, en tips voor je genomics-workflow. Maximaal twee keer per maand.</p>
 
   <form class="nl-form" onsubmit="submitNewsletter(event)">
     <input
@@ -1162,15 +1171,16 @@ footer {
       placeholder="jouw@email.be"
       required
       autocomplete="email"
+      data-i18n-placeholder="nl_placeholder"
     >
-    <button class="nl-btn" type="submit">Inschrijven →</button>
+    <button class="nl-btn" type="submit" data-i18n="nl_btn">Inschrijven →</button>
   </form>
 
-  <div class="nl-success" id="nl-success">
+  <div class="nl-success" id="nl-success" data-i18n="nl_success">
     ✓ Ingeschreven! Je ontvangt een bevestiging per e-mail.
   </div>
 
-  <p class="nl-note">Geen spam. Geen doorverkoop. Altijd afmeldbaar.</p>
+  <p class="nl-note" data-i18n="nl_note">Geen spam. Geen doorverkoop. Altijd afmeldbaar.</p>
 </div>
 </section>
 
@@ -1187,42 +1197,197 @@ footer {
       </div>
       <span class="nav-name">MycoScope</span>
     </div>
-    <p class="footer-desc">Open-source genomics-platform voor schimmels en planten. Van bodemmonster tot gepubliceerde ontdekking.</p>
-    <p class="footer-copy">© 2026 MycoScope · Open-source · MIT Licentie</p>
+    <p class="footer-desc" data-i18n="ft_desc">Open-source genomics-platform voor schimmels en planten. Van bodemmonster tot gepubliceerde ontdekking.</p>
+    <p class="footer-copy" data-i18n="ft_copy">© 2026 MycoScope · Open-source · MIT Licentie</p>
   </div>
 
   <div>
     <div class="footer-col-title">Platform</div>
     <div class="footer-links">
-      <a href="#download">Download alfa</a>
-      <a href="https://github.com/4ndmstcs68-web/mycoscope-cursus">GitHub</a>
+      <a href="download.html" data-i18n="ft_dl">Download alfa</a>
+      <a href="https://github.com/glennmandagi/mycoscope">GitHub</a>
       <a href="#features">Features</a>
       <a href="pubmed-rag.html">PubMed RAG</a>
     </div>
   </div>
 
   <div>
-    <div class="footer-col-title">Leren</div>
+    <div class="footer-col-title" data-i18n="ft_learn_title">Leren</div>
     <div class="footer-links">
-      <a href="cursus.html">Cursus (gratis)</a>
-      <a href="why.html">Waarom genomics?</a>
-      <a href="cursus.html#u9">App-tutorial</a>
-      <a href="#nieuwsbrief">Nieuwsbrief</a>
+      <a id="ftCourseLink" href="cursus.html" data-i18n="ft_course">Cursus (gratis)</a>
+      <a href="why.html" data-i18n="ft_why">Waarom genomics?</a>
+      <a href="cursus.html#u9" data-i18n="ft_tutorial">App-tutorial</a>
+      <a href="#nieuwsbrief" data-i18n="ft_newsletter">Nieuwsbrief</a>
     </div>
   </div>
 
   <div>
-    <div class="footer-col-title">Contact</div>
+    <div class="footer-col-title" data-i18n="ft_contact_title">Contact</div>
     <div class="footer-links">
-      <a href="https://github.com/4ndmstcs68-web/mycoscope-cursus/issues">Bug melden</a>
-      <a href="https://github.com/4ndmstcs68-web/mycoscope-cursus/discussions">Discussies</a>
-      <a href="#nieuwsbrief">E-mail updates</a>
+      <a href="https://github.com/4ndmstcs68-web/mycoscope-cursus/issues" data-i18n="ft_bugs">Bug melden</a>
+      <a href="https://github.com/4ndmstcs68-web/mycoscope-cursus/discussions" data-i18n="ft_discuss">Discussies</a>
+      <a href="#nieuwsbrief" data-i18n="ft_email">E-mail updates</a>
     </div>
   </div>
 </div>
 </footer>
 
 <script>
+// ─── i18n ───────────────────────────────────────────────────────
+const T = {
+  nl: {
+    nav_dl:'Download', nav_course:'Cursus', nav_why:'Waarom', nav_cta:'↓ Download alfa',
+    hero_title:'Van bodemmonster<br>tot <em>genomisch inzicht</em>',
+    hero_sub:'MycoScope brengt de krachtigste bioinformatica-tools voor schimmels en planten naar je eigen laptop. Gratis, offline, en gebouwd voor iedereen — van universitair onderzoeker tot citizen scientist.',
+    hero_btn_dl:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3M2 11v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download alfa — gratis',
+    hero_btn_course:'Bekijk de cursus →',
+    stat_lessons:'lessen', stat_hours:'uur', stat_content:'cursusinhoud',
+    stat_fungi:'schimmels onontdekt', stat_free:'altijd gratis',
+    aud_label:'Voor wie',
+    aud_title:'Genomics was voor <em>iedereen</em><br>altijd al bedoeld',
+    aud_sub:'Eén platform. Vier werelden. Of je nu in een lab werkt, een veld instapt, een klas geeft, of thuis een microscoop hebt — MycoScope is voor jou gebouwd.',
+    aud1_title:'Universitaire onderzoekers',
+    aud1_body:'Van CRISPR-ontwerp tot RNA-seq analyse, van BGC-detectie tot pan-genomics. Publicatie-klare methoden en figuren ingebouwd. Koppelt naadloos aan Snakemake en Nextflow.',
+    aud2_title:'Studenten &amp; docenten',
+    aud2_body:'De ingebouwde cursus van 17 uur begeleidt je van DNA-basiskennis tot een volledig genomics-experiment. Geschreven als een kwaliteitskrant, niet als een leerboek.',
+    aud3_title:'Veldmycologen',
+    aud3_body:'ITS-barcode identificatie van isolaten, metagenomics van bodemmonsters, koppeling aan UNITE. Werkt volledig offline — ook in het veld zonder internetverbinding.',
+    aud4_title:'Citizen scientists',
+    aud4_body:'Een MinION-sequencer kost £1.000 en past in je zak. Met MycoScope heb je alles wat je nodig hebt om thuis echte genomics-wetenschap te doen. Geen PhD vereist.',
+    feat_label:'Wat MycoScope doet',
+    feat_title:'De volledige cirkel —<br>van <em style="color:var(--gold2);">sequencing</em> tot publicatie',
+    feat_sub:'Geen losse tools die je aan elkaar moet plakken. Eén platform dat de volledige genomics-workflow ondersteunt, van ruwe FASTQ tot ingediend manuscript.',
+    f1_title:'Genoomviewer', f1_body:'Interactieve chromosoomkaart met BGC-clusters, genfuncties en syntenie-vergelijking. Klik op elk gen voor volledige annotatie, FungiDB-links en expressiedata.', f1_tag:'Kern',
+    f2_title:'CRISPR-designer', f2_body:'Scan elk gen op gRNA-kandidaten. SpCas9, SaCas9, AsCas12a. Automatische off-target analyse met CFD-scoring. Export direct naar IDT voor synthese.', f2_tag:'Experiment',
+    f3_title:'RNA-seq analyse', f3_body:'DESeq2-gebaseerde differentiële expressie. Volcano plots, heatmaps, PCA, GO-enrichment. Van ruwe FASTQ tot biologische conclusie in één workflow.', f3_tag:'Analyse',
+    f4_title:'BGC-detectie', f4_body:'antiSMASH-integratie voor het vinden van biosynthese-genclusters. Vergelijking met MIBiG. Identificeer potentieel nieuwe antibiotica in onbekende schimmelgenomen.', f4_tag:'Ontdekking',
+    f5_title:'Variant Calling', f5_body:'Valideer CRISPR-edits automatisch. Upload wildtype + mutant FASTQ, MycoScope aligneert met Minimap2, roept varianten aan met bcftools en bevestigt de edit.', f5_tag:'Validatie',
+    f6_title:'Fylogenie &amp; metagenomics', f6_body:'ITS-barcode identificatie, fylogenetische bomen met bootstrap-validatie, UNITE-database integratie. Metagenomics van bodemmonsters met diversiteitsstatistieken.', f6_tag:'Ecologie',
+    f7_title:'AI-assistent', f7_body:'PubMed RAG: stel een literatuurvraag en krijg een geciteerd antwoord op basis van echte papers. Hypothesegenerator die na RNA-seq de meest veelbelovende CRISPR-targets voorstelt.',
+    f8_title:'Cloud &amp; NAS opslag', f8_body:'Directe integratie met AWS S3, Google Cloud, Azure, Backblaze B2, Synology NAS via WebDAV/SMB/NFS. Genomics-data blijft waar jij het wilt.', f8_tag:'Opslag',
+    f9_title:'Lab Notebook &amp; publicatie', f9_body:'Elke analyse automatisch gelogd. Genereer publicatie-klare methoden-paragrafen, figuren in Nature/mBio/PLOS-stijl, en FAIR-data exports voor NCBI-indiening.', f9_tag:'Publicatie',
+    dl_title:'MycoScope <em>alfa</em>',
+    dl_sub:'De eerste publieke release. Volledig functioneel voor genoomanalyse, CRISPR-ontwerp, RNA-seq en BGC-detectie. Gratis, altijd.',
+    dl_for:'Downloaden voor',
+    dl_note:'v0.1.0-alpha · ~35 MB · Vereist: macOS 12+ / Windows 10+ / Ubuntu 20+<br>Open-source · <a href="https://github.com/glennmandagi/mycoscope">GitHub</a> · <a href="download.html">Alle releases →</a>',
+    course_label:'Gratis cursus',
+    course_title:'Van <em style="color:var(--purple);">waarom</em> naar<br>hoe naar wat',
+    course_sub:'49 lessen, 17 uur, geschreven als een kwaliteitskrant. Niet droog. Niet technisch. Het verhaal van hoe schimmels de wereld redden — en hoe jij dat kunt bestuderen.',
+    ctb_title:'Volledig gratis, altijd',
+    ctb_sub:'Geen aanmelding. Geen betaalmuur. Werkt offline als PWA. De cursus is een permanente aanvulling op de app — niet een lokkertje voor een abonnement.',
+    ctb_btn:'▶ Start de cursus',
+    u0_name:'Waarom dit alles ertoe doet', u0_meta:'6 lessen · 109 min',
+    u1_name:'De taal van het leven', u1_meta:'3 lessen · 60 min',
+    u2_name:'De machine die leest', u2_meta:'3 lessen · 60 min',
+    u4_name:'Schimmels: de vergeten kwart', u4_meta:'4 lessen · 86 min',
+    u5_name:'CRISPR: het moleculaire schaartje', u5_meta:'5 lessen · 113 min',
+    u9_name:'MycoScope — de app', u9_meta:'6 lessen · 147 min',
+    more_units:'+ 5 meer units bekijken →',
+    nl_label:'Blijf op de hoogte',
+    nl_title:'De ontdekkingen beginnen<br>met <em>jou</em>',
+    nl_sub:'Updates over nieuwe releases, wetenschappelijke ontdekkingen gedaan met MycoScope, en tips voor je genomics-workflow. Maximaal twee keer per maand.',
+    nl_placeholder:'jouw@email.be', nl_btn:'Inschrijven →',
+    nl_success:'✓ Ingeschreven! Je ontvangt een bevestiging per e-mail.',
+    nl_note:'Geen spam. Geen doorverkoop. Altijd afmeldbaar.',
+    ft_desc:'Open-source genomics-platform voor schimmels en planten. Van bodemmonster tot gepubliceerde ontdekking.',
+    ft_copy:'© 2026 MycoScope · Open-source · MIT Licentie',
+    ft_dl:'Download alfa', ft_learn_title:'Leren', ft_course:'Cursus (gratis)',
+    ft_why:'Waarom genomics?', ft_tutorial:'App-tutorial', ft_newsletter:'Nieuwsbrief',
+    ft_contact_title:'Contact', ft_bugs:'Bug melden', ft_discuss:'Discussies', ft_email:'E-mail updates',
+  },
+  en: {
+    nav_dl:'Download', nav_course:'Course', nav_why:'Why', nav_cta:'↓ Download alpha',
+    hero_title:'From soil sample<br>to <em>genomic insight</em>',
+    hero_sub:'MycoScope brings the most powerful bioinformatics tools for fungi and plants to your own laptop. Free, offline, and built for everyone — from university researchers to citizen scientists.',
+    hero_btn_dl:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3M2 11v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download alpha — free',
+    hero_btn_course:'View the course →',
+    stat_lessons:'lessons', stat_hours:'hours', stat_content:'course content',
+    stat_fungi:'fungi undiscovered', stat_free:'always free',
+    aud_label:'Who it\'s for',
+    aud_title:'Genomics was always meant<br>for <em>everyone</em>',
+    aud_sub:'One platform. Four worlds. Whether you work in a lab, walk into a field, teach a class, or have a microscope at home — MycoScope is built for you.',
+    aud1_title:'University researchers',
+    aud1_body:'From CRISPR design to RNA-seq analysis, from BGC detection to pan-genomics. Publication-ready methods and figures built in. Integrates seamlessly with Snakemake and Nextflow.',
+    aud2_title:'Students &amp; educators',
+    aud2_body:'The built-in 17-hour course guides you from DNA basics to a complete genomics experiment. Written like quality journalism, not a textbook.',
+    aud3_title:'Field mycologists',
+    aud3_body:'ITS barcode identification of isolates, metagenomics from soil samples, integration with UNITE. Fully offline — even in the field without internet.',
+    aud4_title:'Citizen scientists',
+    aud4_body:'A MinION sequencer costs £1,000 and fits in your pocket. With MycoScope you have everything you need to do real genomics science at home. No PhD required.',
+    feat_label:'What MycoScope does',
+    feat_title:'The complete circle —<br>from <em style="color:var(--gold2);">sequencing</em> to publication',
+    feat_sub:'No loose tools to glue together. One platform supporting the full genomics workflow, from raw FASTQ to submitted manuscript.',
+    f1_title:'Genome Viewer', f1_body:'Interactive chromosome map with BGC clusters, gene functions and synteny comparison. Click any gene for full annotation, FungiDB links and expression data.', f1_tag:'Core',
+    f2_title:'CRISPR Designer', f2_body:'Scan any gene for gRNA candidates. SpCas9, SaCas9, AsCas12a. Automatic off-target analysis with CFD scoring. Export directly to IDT for synthesis.', f2_tag:'Experiment',
+    f3_title:'RNA-seq Analysis', f3_body:'DESeq2-based differential expression. Volcano plots, heatmaps, PCA, GO enrichment. From raw FASTQ to biological conclusion in one workflow.', f3_tag:'Analysis',
+    f4_title:'BGC Detection', f4_body:'antiSMASH integration for finding biosynthetic gene clusters. Comparison with MIBiG. Identify potentially new antibiotics in unknown fungal genomes.', f4_tag:'Discovery',
+    f5_title:'Variant Calling', f5_body:'Validate CRISPR edits automatically. Upload wildtype + mutant FASTQ, MycoScope aligns with Minimap2, calls variants with bcftools and confirms the edit.', f5_tag:'Validation',
+    f6_title:'Phylogeny &amp; Metagenomics', f6_body:'ITS barcode identification, phylogenetic trees with bootstrap validation, UNITE database integration. Metagenomics from soil samples with diversity statistics.', f6_tag:'Ecology',
+    f7_title:'AI Assistant', f7_body:'PubMed RAG: ask a literature question and receive a cited answer based on real papers. Hypothesis generator that suggests the most promising CRISPR targets after RNA-seq.',
+    f8_title:'Cloud &amp; NAS Storage', f8_body:'Direct integration with AWS S3, Google Cloud, Azure, Backblaze B2, Synology NAS via WebDAV/SMB/NFS. Your genomics data stays where you want it.', f8_tag:'Storage',
+    f9_title:'Lab Notebook &amp; Publication', f9_body:'Every analysis automatically logged. Generate publication-ready methods sections, figures in Nature/mBio/PLOS style, and FAIR data exports for NCBI submission.', f9_tag:'Publication',
+    dl_title:'MycoScope <em>alpha</em>',
+    dl_sub:'The first public release. Fully functional for genome analysis, CRISPR design, RNA-seq and BGC detection. Free, always.',
+    dl_for:'Download for',
+    dl_note:'v0.1.0-alpha · ~35 MB · Requires: macOS 12+ / Windows 10+ / Ubuntu 20+<br>Open-source · <a href="https://github.com/glennmandagi/mycoscope">GitHub</a> · <a href="download.html">All releases →</a>',
+    course_label:'Free course',
+    course_title:'From <em style="color:var(--purple);">why</em> to<br>how to what',
+    course_sub:'49 lessons, 17 hours, written like quality journalism. Not dry. Not technical. The story of how fungi save the world — and how you can study that.',
+    ctb_title:'Completely free, always',
+    ctb_sub:'No sign-up. No paywall. Works offline as PWA. The course is a permanent addition to the app — not a hook for a subscription.',
+    ctb_btn:'▶ Start the course',
+    u0_name:'Why this all matters', u0_meta:'6 lessons · 109 min',
+    u1_name:'The language of life', u1_meta:'3 lessons · 60 min',
+    u2_name:'The machine that reads', u2_meta:'3 lessons · 60 min',
+    u4_name:'Fungi: the forgotten quarter', u4_meta:'4 lessons · 86 min',
+    u5_name:'CRISPR: the molecular scissors', u5_meta:'5 lessons · 113 min',
+    u9_name:'MycoScope — the app', u9_meta:'6 lessons · 147 min',
+    more_units:'+ View 5 more units →',
+    nl_label:'Stay updated',
+    nl_title:'Discoveries begin<br>with <em>you</em>',
+    nl_sub:'Updates on new releases, scientific discoveries made with MycoScope, and tips for your genomics workflow. At most twice a month.',
+    nl_placeholder:'your@email.com', nl_btn:'Subscribe →',
+    nl_success:'✓ Subscribed! You will receive a confirmation by email.',
+    nl_note:'No spam. No reselling. Always unsubscribable.',
+    ft_desc:'Open-source genomics platform for fungi and plants. From soil sample to published discovery.',
+    ft_copy:'© 2026 MycoScope · Open-source · MIT License',
+    ft_dl:'Download alpha', ft_learn_title:'Learn', ft_course:'Course (free)',
+    ft_why:'Why genomics?', ft_tutorial:'App tutorial', ft_newsletter:'Newsletter',
+    ft_contact_title:'Contact', ft_bugs:'Report a bug', ft_discuss:'Discussions', ft_email:'Email updates',
+  }
+};
+
+let currentLang = localStorage.getItem('mcs-lang') || 'nl';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('mcs-lang', lang);
+  document.documentElement.lang = lang;
+  document.title = lang === 'en' ? 'MycoScope — Genomics for Everyone' : 'MycoScope — Genomics voor iedereen';
+  document.getElementById('btnNL').classList.toggle('active', lang === 'nl');
+  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (T[lang][k] !== undefined) el.innerHTML = T[lang][k];
+  });
+
+  // Placeholder on input
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const k = el.dataset.i18nPlaceholder;
+    if (T[lang][k]) el.placeholder = T[lang][k];
+  });
+
+  // Course links: swap NL ↔ EN course
+  const courseHref = lang === 'en' ? 'cursus-en.html' : 'cursus.html';
+  document.getElementById('courseStartBtn').href = courseHref;
+  document.getElementById('ftCourseLink').href = courseHref;
+  ['u0link','u1link','u2link','u4link','u5link','u9link','moreUnitsLink'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = el.href.replace(/cursus(-en)?\.html/, courseHref);
+  });
+}
+
 // ─── Scroll reveal ─────────────────────────────────────────────
 const obs = new IntersectionObserver(
   es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); }),
@@ -1230,64 +1395,37 @@ const obs = new IntersectionObserver(
 );
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-// ─── Newsletter ────────────────────────────────────────────────
+// ─── Newsletter ─────────────────────────────────────────────────
 function submitNewsletter(e) {
   e.preventDefault();
   const email = document.getElementById('nl-email').value;
-
-  // Stuur naar n8n webhook (vervang URL door jouw n8n-endpoint)
   fetch('https://jouw-n8n-endpoint.be/webhook/mycoscope-newsletter', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email,
-      source: 'website',
-      timestamp: new Date().toISOString(),
-      language: 'nl',
-    }),
-  }).catch(() => {}); // stil falen — toon altijd succes aan gebruiker
-
-  // Toon succes
+    body: JSON.stringify({ email, source: 'website', timestamp: new Date().toISOString(), language: currentLang }),
+  }).catch(() => {});
   document.querySelector('.nl-form').style.display = 'none';
-  const success = document.getElementById('nl-success');
-  success.style.display = 'block';
-
-  // Sla lokaal op
+  document.getElementById('nl-success').style.display = 'block';
   localStorage.setItem('ms_newsletter', email);
 }
 
-// ─── Download click ────────────────────────────────────────────
-function dlClick(platform) {
-  // Analytics event (optioneel)
-  fetch('https://jouw-n8n-endpoint.be/webhook/mycoscope-download', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ platform, timestamp: new Date().toISOString() }),
-  }).catch(() => {});
-
-  // Vervang # door echte downloadlinks zodra de app beschikbaar is
-  alert(`De ${platform} download komt binnenkort beschikbaar. Schrijf je in voor de nieuwsbrief voor een melding bij release!`);
-}
-
-// ─── Nav transparantie bij scrollen ───────────────────────────
+// ─── Nav opacity on scroll ──────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.querySelector('nav').style.background =
-    window.scrollY > 60
-      ? 'rgba(4,7,14,.97)'
-      : 'rgba(4,7,14,.85)';
+    window.scrollY > 60 ? 'rgba(4,7,14,.97)' : 'rgba(4,7,14,.85)';
 });
 
-// ─── Smooth anchor scroll ──────────────────────────────────────
+// ─── Smooth anchor scroll ───────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const id = a.getAttribute('href').slice(1);
     const el = document.getElementById(id);
-    if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
   });
 });
+
+// ─── Init ───────────────────────────────────────────────────────
+setLang(currentLang);
 </script>
 </body>
 </html>

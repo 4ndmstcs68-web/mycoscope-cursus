@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>404 — MycoScope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:   #04070E;
+  --bg1:  #070B14;
+  --bg2:  #0B101C;
+  --bg3:  #101825;
+  --bg4:  #161F30;
+  --teal:    #19C9B2;
+  --teal2:   #0C9485;
+  --teal3:   #042E2A;
+  --gold2:   #F0C040;
+  --purple:  #8B6EF5;
+  --tx:  #E8F0FC;
+  --tx1: #7A8FAD;
+  --tx2: #364055;
+  --bd:  rgba(255,255,255,.06);
+  --bd2: rgba(255,255,255,.12);
+  --mono:  'DM Mono', monospace;
+  --serif: 'Crimson Pro', Georgia, serif;
+  --sans:  'Syne', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 900;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+  background: rgba(4,7,14,.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--bd);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  margin-right: auto;
+}
+.nav-hex {
+  width: 26px; height: 26px;
+  background: var(--teal3);
+  border: 1.5px solid var(--teal2);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-name {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tx);
+  letter-spacing: -.2px;
+}
+
+/* ─── LANG TOGGLE ─── */
+.lang-toggle {
+  display: flex;
+  gap: 2px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 6px;
+  padding: 3px;
+}
+.lang-btn {
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .5px;
+  color: var(--tx1);
+  transition: all .15s;
+}
+.lang-btn.active { background: #161F30; color: var(--tx); }
+
+/* ─── HERO / 404 CONTENT ─── */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Radial glow */
+.page::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(25,201,178,.06) 0%, transparent 65%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-55%);
+  pointer-events: none;
+}
+
+/* Animated spore dots */
+.spore {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--teal);
+  opacity: 0;
+  animation: sporeFloat linear infinite;
+  pointer-events: none;
+}
+@keyframes sporeFloat {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  10%  { opacity: .4; }
+  90%  { opacity: .15; }
+  100% { transform: translateY(-600px) scale(.3); opacity: 0; }
+}
+
+.four04 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(100px, 22vw, 180px);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--teal);
+  opacity: .18;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+  margin-bottom: -16px;
+}
+
+.heading {
+  font-family: var(--sans);
+  font-size: clamp(22px, 4vw, 38px);
+  font-weight: 700;
+  color: var(--tx);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 14px;
+}
+
+.sub {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--tx1);
+  max-width: 460px;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 36px;
+}
+
+.btn-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 24px;
+  border-radius: 9px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all .15s;
+}
+
+.btn-primary {
+  background: var(--teal3);
+  border: 1px solid var(--teal2);
+  color: var(--teal);
+}
+.btn-primary:hover { background: var(--teal2); color: #fff; }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--bd2);
+  color: var(--tx1);
+}
+.btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+/* mono label */
+.err-code {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--tx2);
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-hex">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+        <path d="M7 1.2L12 3.95V9.45L7 12.2L2 9.45V3.95L7 1.2Z" stroke="#19C9B2" stroke-width="1.3"/>
+        <circle cx="7" cy="7" r="2" fill="#19C9B2"/>
+      </svg>
+    </div>
+    <span class="nav-name">MycoScope</span>
+  </a>
+  <div class="lang-toggle">
+    <button class="lang-btn" id="btnNL" onclick="setLang('nl')">NL</button>
+    <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<!-- FLOATING SPORES -->
+<div class="page">
+  <div class="spore" style="width:3px;height:3px;left:15%;top:80%;animation-duration:18s;animation-delay:0s;"></div>
+  <div class="spore" style="width:2px;height:2px;left:25%;top:85%;animation-duration:22s;animation-delay:3s;background:var(--gold2);"></div>
+  <div class="spore" style="width:4px;height:4px;left:45%;top:90%;animation-duration:16s;animation-delay:6s;"></div>
+  <div class="spore" style="width:2px;height:2px;left:65%;top:82%;animation-duration:24s;animation-delay:1s;background:var(--purple);"></div>
+  <div class="spore" style="width:3px;height:3px;left:80%;top:88%;animation-duration:19s;animation-delay:4s;"></div>
+  <div class="spore" style="width:2px;height:2px;left:90%;top:78%;animation-duration:21s;animation-delay:8s;background:var(--gold2);"></div>
+  <div class="spore" style="width:2px;height:2px;left:35%;top:92%;animation-duration:20s;animation-delay:2s;"></div>
+  <div class="spore" style="width:3px;height:3px;left:55%;top:86%;animation-duration:17s;animation-delay:5s;background:var(--purple);"></div>
+
+  <div class="err-code" id="errCode">Fout 404 · Pagina niet gevonden</div>
+  <div class="four04">404</div>
+  <h1 class="heading" id="heading">Pagina niet gevonden</h1>
+  <p class="sub" id="sub">De pagina die je zoekt bestaat niet (meer), of het adres klopt niet. Misschien helpt een van de links hieronder.</p>
+
+  <div class="btn-row">
+    <a href="index.html" class="btn btn-primary" id="btnHome">← Terug naar home</a>
+    <a href="cursus.html" class="btn btn-ghost" id="btnCourse">Open de cursus</a>
+  </div>
+</div>
+
+<script>
+const STRINGS = {
+  nl: {
+    errCode: 'Fout 404 · Pagina niet gevonden',
+    heading: 'Pagina niet gevonden',
+    sub: 'De pagina die je zoekt bestaat niet (meer), of het adres klopt niet. Misschien helpt een van de links hieronder.',
+    btnHome: '← Terug naar home',
+    btnCourse: 'Open de cursus',
+  },
+  en: {
+    errCode: 'Error 404 · Page not found',
+    heading: 'Page not found',
+    sub: 'The page you\'re looking for doesn\'t exist or the address is incorrect. One of the links below might help.',
+    btnHome: '← Go home',
+    btnCourse: 'Open the course',
+  }
+};
+
+function setLang(lang) {
+  localStorage.setItem('mcs-lang', lang);
+  document.getElementById('btnNL').classList.toggle('active', lang === 'nl');
+  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+  const s = STRINGS[lang] || STRINGS.nl;
+  document.getElementById('errCode').textContent  = s.errCode;
+  document.getElementById('heading').textContent  = s.heading;
+  document.getElementById('sub').textContent      = s.sub;
+  document.getElementById('btnHome').textContent  = s.btnHome;
+  document.getElementById('btnCourse').textContent = s.btnCourse;
+}
+
+// Init from localStorage
+const lang = localStorage.getItem('mcs-lang') || 'nl';
+setLang(lang);
+</script>
+</body>
+</html>
